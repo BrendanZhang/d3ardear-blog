@@ -1,9 +1,35 @@
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: -apple-system, "Noto Sans", "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial,
+    "Liberation Sans", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Source Han Sans SC",
+    "Source Han Sans CN", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti",
+    SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
+  margin: auto;
+  /* max-width: 38rem;
+  padding: 2rem; */
+  background-color: #ffffff;
+}
+
+.ele_drag {
+  -webkit-app-region: drag; /* 让元素可拖动，设置了drag的元素不可点击 */
+}
+
+.no_drag {
+  -webkit-app-region: no-drag; /* 设置了drag的元素将不可点击，故设置no-drag，让元素可点击 */
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+
+.container {
+  padding: 0 2rem;
 }
 
 a {
