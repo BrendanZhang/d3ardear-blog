@@ -1,17 +1,33 @@
+import { GithubFilled } from "@ant-design/icons";
+import { TextSnippet } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 import styled from "styled-components";
 
 const Header = () => {
   return (
     <HeaderContainer>
-      <div>D3arDear</div>
-      <div style={{ display: "inline-flex" }}></div>
+      <div></div>
+      <div>
+        <IconButton aria-label="blog" style={IconStyle}>
+          <TextSnippet />
+        </IconButton>
+        <IconButton aria-label="github" style={IconStyle}>
+          <GithubFilled />
+        </IconButton>
+      </div>
     </HeaderContainer>
   );
 };
 
+const IconStyle = {
+  fontsize: "20px",
+  color: "#eeeeee",
+  margin: "0 0.5em",
+};
+
 const HeaderContainer = styled.header({
   display: "flex",
-  justifyContent: "space-between",
+  justifyContent: "flex-end",
   alignItems: "center",
   padding: "20px",
   position: "absolute",
