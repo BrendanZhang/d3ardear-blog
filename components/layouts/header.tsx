@@ -1,6 +1,7 @@
 import { GithubFilled } from "@ant-design/icons";
 import { TextSnippet } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
+import Link from "next/link";
 import { useMemo } from "react";
 import styled from "styled-components";
 
@@ -21,12 +22,16 @@ const Header: React.FC<IHeader> = (props) => {
     <HeaderContainer>
       <div></div>
       <div>
-        <IconButton aria-label="blog" style={IconStyle}>
-          <TextSnippet />
-        </IconButton>
-        <IconButton aria-label="github" style={IconStyle}>
-          <GithubFilled />
-        </IconButton>
+        <Link href="blog/archive">
+          <IconButton aria-label="blog" style={IconStyle}>
+            <TextSnippet />
+          </IconButton>
+        </Link>
+        <Link href="portfolio/archive">
+          <IconButton aria-label="github" style={IconStyle}>
+            <GithubFilled />
+          </IconButton>
+        </Link>
       </div>
     </HeaderContainer>
   );
