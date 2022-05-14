@@ -4,7 +4,7 @@ import styles from "../styles/Home.module.css";
 import styled from "styled-components";
 import Footer from "../components/layouts/footer";
 import Header from "../components/layouts/header";
-import ArrowLink from "../components/arrowLink";
+import ArrowLink from "../components/arrowLink/arrowLink";
 
 const Home: NextPage = () => {
   return (
@@ -14,11 +14,11 @@ const Home: NextPage = () => {
         <meta name="description" content=";" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
+      <Header mode="light" />
       <MainContainer>
         <BackgroundImg />
+        <ArrowLink color="#eeeeee" />
       </MainContainer>
-      <ArrowLink href="blog" />
       <Footer />
     </div>
   );

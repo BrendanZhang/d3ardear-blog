@@ -1,9 +1,22 @@
 import { GithubFilled } from "@ant-design/icons";
 import { TextSnippet } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
+import { useMemo } from "react";
 import styled from "styled-components";
 
-const Header = () => {
+interface IHeader {
+  mode: "light" | "dark";
+  sticky?: boolean;
+}
+
+const Header: React.FC<IHeader> = (props) => {
+  const { mode, sticky } = props;
+  const isLight = useMemo(() => mode === "light", [mode]);
+  const IconStyle = {
+    fontsize: "20px",
+    color: isLight ? "#eeeeee" : "#333333",
+    margin: "0 0.5em",
+  };
   return (
     <HeaderContainer>
       <div></div>
@@ -17,12 +30,6 @@ const Header = () => {
       </div>
     </HeaderContainer>
   );
-};
-
-const IconStyle = {
-  fontsize: "20px",
-  color: "#eeeeee",
-  margin: "0 0.5em",
 };
 
 const HeaderContainer = styled.header({
