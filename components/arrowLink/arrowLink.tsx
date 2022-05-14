@@ -9,14 +9,14 @@ import { DownArrowContainer, UpArrowContainer } from "./styledArrow";
 type THref = "blog" | "/" | "portfolio";
 interface IArrowLink {
   color: string;
+  order: number;
+  triggerUp: () => void;
+  triggerDown: () => void;
 }
 
 const ArrowLink: React.FC<IArrowLink> = (props) => {
-  const { color } = props;
+  const { color, order: key, triggerUp, triggerDown } = props;
   const path = useRouter().pathname;
-  const currentPath = useMemo(() => {
-    return path === "/" ? "/" : path.replace("/", "");
-  }, [path]);
 
   const ArrowIcon: React.FC<{ href: string; down: boolean }> = (props) => {
     const { href, down } = props;
@@ -25,13 +25,19 @@ const ArrowLink: React.FC<IArrowLink> = (props) => {
       <Link href={href} style={{ color: color }}>
         {down ? (
           <DownArrowContainer>
-            <IconButton aria-label={buttonLabel} style={{ color: color }}>
+            <IconButton
+              aria-label={buttonLabel}
+              style={{ color: color }}
+              onClick={() => triggerDown()}>
               <KeyboardArrowDownIcon style={{ fontSize: "40px", color: "inherit" }} />
             </IconButton>
           </DownArrowContainer>
         ) : (
           <UpArrowContainer>
-            <IconButton aria-label={buttonLabel} style={{ color: color }}>
+            <IconButton
+              aria-label={buttonLabel}
+              style={{ color: color }}
+              onClick={() => triggerUp()}>
               <KeyboardArrowUpIcon style={{ fontSize: "40px", color: "inheirt" }} />
             </IconButton>
           </UpArrowContainer>
@@ -41,18 +47,16 @@ const ArrowLink: React.FC<IArrowLink> = (props) => {
   };
 
   const direction = useMemo(() => {
-    const pathArr = {
-      "/": <ArrowIcon href="blog" down />,
-      blog: (
-        <>
-          <ArrowIcon href="/" down={false} />
-          <ArrowIcon href="portfolio" down />
-        </>
-      ),
-      portfolio: <ArrowIcon href="blog" down={false} />,
-    };
-    return pathArr[currentPath as THref];
-  }, [currentPath]);
+    const pathArr = [
+      <ArrowIcon href="blog" down />,
+      <>
+        <ArrowIcon href="/" down={false} />
+        <ArrowIcon href="portfolio" down />
+      </>,
+      <ArrowIcon href="blog" down={false} />,
+    ];
+    return pathArr[key];
+  }, [key]);
 
   return direction;
 };

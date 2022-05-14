@@ -8,7 +8,7 @@ const BlogPage: NextPage = () => {
     <main>
       <Header mode="dark" />
       <main></main>
-      <ArrowLink color="#333" />
+      {/* <ArrowLink color="#333" /> */}
       <Footer />
     </main>
   );

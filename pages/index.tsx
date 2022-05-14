@@ -1,12 +1,19 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import styled from "styled-components";
 import Footer from "../components/layouts/footer";
 import Header from "../components/layouts/header";
 import ArrowLink from "../components/arrowLink/arrowLink";
+import { FullPageMain } from "../components/styledComponents/fullPageMain";
+import {
+  HomePageBackgroundImg,
+  HomePageMainContainer,
+} from "../components/styledComponents/homePageComponents";
 
 const Home: NextPage = () => {
+  const testFunc = () => {
+    console.log("占用");
+  };
   return (
     <div className={styles.container}>
       <Head>
@@ -15,27 +22,21 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header mode="light" />
-      <MainContainer>
-        <BackgroundImg />
-        <ArrowLink color="#eeeeee" />
-      </MainContainer>
+      <HomePageMainContainer key={0} className="section">
+        <HomePageBackgroundImg />
+        <ArrowLink order={0} color="#eeeeee" triggerUp={testFunc} triggerDown={testFunc} />
+      </HomePageMainContainer>
+      <FullPageMain key={1} className="section">
+        <div>这是博客</div>
+        <ArrowLink order={1} color="#333" triggerUp={testFunc} triggerDown={testFunc} />
+      </FullPageMain>
+      <FullPageMain key={2} className="section">
+        <div>这是项目</div>
+        <ArrowLink order={2} color="#333" triggerUp={testFunc} triggerDown={testFunc} />
+      </FullPageMain>
       <Footer />
     </div>
   );
 };
-
-const MainContainer = styled.main`
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(45deg, #2c3033 100%, #2c3033 90%);
-  display: flex;
-`;
-const BackgroundImg = styled.div`
-  width: 100%;
-  height: 100%;
-  background: url("/semicolon.png") center center no-repeat;
-  margin: auto;
-  background-size: cover;
-`;
 
 export default Home;
