@@ -22,7 +22,7 @@ interface IFullPageProps {
   // 页面改动时的回调
   pageOnChange?: (page: number) => void;
   // 一开始渲染全部页面
-  renderAllPagesOnFirstRender?: boolean;
+  renderAllPagesOnMount?: boolean;
   // 自定义时间函数
   transitionFunction?: string;
 }

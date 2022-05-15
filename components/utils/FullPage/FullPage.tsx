@@ -10,7 +10,7 @@ import {
   WheelEventHandler,
 } from "react";
 import styled from "styled-components";
-import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_TO_RENDER_LENGTH } from "./constant";
+import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_TO_RENDER_LENGTH, DISABLED_CLASS_NAME } from "./constant";
 import { usePrevIndex } from "./FullPageHooks";
 import { pageStyle, wrapperStyle } from "./styles";
 import { isEmpty } from "./utils";
@@ -23,7 +23,15 @@ const FullPage = (props: IFullPageProps) => {
     isBodyScrollEnabled = useRef(true),
     isTransitionAfterPageToRenderChanged = useRef(false);
 
-  const { children, onBeforePageScroll, animationDuration, transitionFunction } = props;
+  const {
+    children,
+    onBeforePageScroll,
+    animationDuration,
+    transitionFunction,
+    renderAllPagesOnMount,
+  } = props;
+  // toArray().length 会返回渲染出的子节点
+  // Children.count 会返回所有子节点，无论是否渲染
   const childrenArr = useMemo(() => React.Children.toArray(children), [children]);
 
   // 页码
@@ -48,11 +56,52 @@ const FullPage = (props: IFullPageProps) => {
 
   // 滚动动画的时候中间有可能同时有多个页面被渲染（比如从 2 到 0）
   // 这时候需要挂载多个 page
-  const addNextPage = useCallback((pagesToRenderAndMountLength: number) => {
-    let templateCount = 0;
-    !isEmpty(pagesToRenderAndMountLength) && (templateCount = pagesToRenderAndMountLength);
-    Math.max(templateCount, pagesToRenderAndMountLength);
+  const addNextPage = useCallback(
+    (pagesToRenderAndMountLength: number) => {
+      let templateLength = 0;
+      !isEmpty(pagesToRenderAndMountLength) && (templateLength = pagesToRenderAndMountLength);
+
+      // 看一下需要多渲染几个，是不是和现在需要渲染的子节点数一样多
+      templateLength = Math.max(templateLength, pageToRenderLength);
+      // 如果只需要多加一个，而且新增的页面存在，那就添加一个
+      templateLength <= pageIndex + 1 && !isEmpty(childrenArr[pageIndex + 1]) && templateLength++;
+      setPageToRenderLength(templateLength);
+    },
+    [pageToRenderLength, pageIndex, childrenArr]
+  );
+
+  const checkRenderOnMount = useCallback(() => {
+    if (renderAllPagesOnMount) {
+      // 如果设定首次渲染就渲染所有页面，则记录所有节点数
+      setPageToRenderLength(React.Children.count(children));
+    } else if (!isEmpty(childrenArr[DEFAULT_PAGE_INDEX + 1])) {
+      addNextPage(DEFAULT_PAGE_TO_RENDER_LENGTH + 1);
+    }
+  }, [renderAllPagesOnMount, children, childrenArr, addNextPage]);
+
+  // 如果滑到头了，阻止滑动且退回去
+  const disableScroll = useCallback(() => {
+    if (isBodyScrollEnabled.current) {
+      isBodyScrollEnabled.current = false;
+      window.scrollTo({
+        left: 0,
+        top: 0,
+        behavior: "smooth",
+      });
+      document.body.classList.add(DISABLED_CLASS_NAME);
+      document.documentElement.classList.add(DISABLED_CLASS_NAME);
+    }
   }, []);
+
+  const enableScroll = useCallback(() => {
+    if (!isBodyScrollEnabled.current) {
+      isBodyScrollEnabled.current = true;
+      document.body.classList.remove(DISABLED_CLASS_NAME);
+      document.documentElement.classList.remove(DISABLED_CLASS_NAME);
+    }
+  }, []);
+
+  const setRenderPages = useCallback(() => {}, []);
 
   return (
     <main ref={wrapperRef} style={wrapperStyle}>
