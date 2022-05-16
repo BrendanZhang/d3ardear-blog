@@ -17,6 +17,7 @@ const Header: React.FC<IHeader> = (props) => {
     fontsize: "20px",
     color: isLight ? "#eeeeee" : "#333333",
     margin: "0 0.5em",
+    transition: "color 300ms",
   };
   return (
     <HeaderContainer>

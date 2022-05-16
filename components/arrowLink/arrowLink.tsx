@@ -21,13 +21,17 @@ const ArrowLink: React.FC<IArrowLink> = (props) => {
   const ArrowIcon: React.FC<{ href: string; down: boolean }> = (props) => {
     const { href, down } = props;
     const buttonLabel = useMemo(() => `to${href}`, [href]);
+    const colorStyle = {
+      color: color,
+      transition: "color 300ms",
+    };
     return (
-      <div style={{ color: color }}>
+      <div style={colorStyle}>
         {down ? (
           <DownArrowContainer>
             <IconButton
               aria-label={buttonLabel}
-              style={{ color: color }}
+              style={colorStyle}
               onClick={() => clickTrigger("down")}>
               <KeyboardArrowDownIcon style={{ fontSize: "40px", color: "inherit" }} />
             </IconButton>
@@ -36,7 +40,7 @@ const ArrowLink: React.FC<IArrowLink> = (props) => {
           <UpArrowContainer>
             <IconButton
               aria-label={buttonLabel}
-              style={{ color: color }}
+              style={colorStyle}
               onClick={() => clickTrigger("up")}>
               <KeyboardArrowUpIcon style={{ fontSize: "40px", color: "inheirt" }} />
             </IconButton>

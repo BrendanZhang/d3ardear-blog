@@ -15,23 +15,32 @@ import { useMemo, useState } from "react";
 const Home: NextPage = () => {
   const [pageIndex, setPageIndex] = useState(0);
   const onClickArrow = (direction: "up" | "down") => {
-    console.log(direction);
-    direction === "down"
-      ? setPageIndex((pageIndex) => pageIndex + 1)
-      : setPageIndex((pageIndex) => pageIndex - 1);
+    direction === "down" ? handlePageChange(pageIndex + 1) : handlePageChange(pageIndex - 1);
   };
   const arrowColor = useMemo(() => (pageIndex === 0 ? "#eee" : "#333"), [pageIndex]);
   const headerColor = useMemo(() => (pageIndex === 0 ? "light" : "dark"), [pageIndex]);
   const onBeforePageScroll = (index: number) => {
     console.log("onBeforePageScroll");
     console.log(index);
-    console.log("clickArrow", pageIndex);
   };
   const handlePageChange = (index: number) => {
+    console.log("触发handler");
     setPageIndex(index);
-    console.log("handlePageChange");
     console.log(index);
-    console.log("clickArrow", pageIndex);
+  };
+  console.log("clickArrow", pageIndex);
+
+  const PageButton = () => {
+    const pageNumbers = [];
+
+    for (let i = 1; i <= 3; i++) {
+      pageNumbers.push(
+        <button key={i} onClick={() => handlePageChange(i - 1)}>
+          {i}
+        </button>
+      );
+    }
+    return <>{[...pageNumbers]}</>;
   };
   return (
     <div className={styles.container}>
@@ -41,7 +50,6 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header mode={headerColor} />
-
       <ArrowLink order={pageIndex} color={arrowColor} clickTrigger={onClickArrow} />
 
       <FullPage

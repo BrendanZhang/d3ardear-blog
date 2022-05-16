@@ -229,7 +229,6 @@ const FullPage = (props: IFullPageProps) => {
   );
   useEffect(() => {
     const wrapper = wrapperRef.current;
-    console.log(wrapper);
     (wrapper as HTMLElement).addEventListener("touchmove", touchMove);
     (wrapper as HTMLElement).addEventListener("keydown", keyPress);
     return () => {
@@ -262,7 +261,11 @@ const FullPage = (props: IFullPageProps) => {
   }, [onPageChange, pageIndex]);
 
   useEffect(() => {
-    if (customPageIndex && customPageIndex !== null && customPageIndex !== pageIndex) {
+    if (
+      customPageIndex !== undefined &&
+      customPageIndex !== null &&
+      customPageIndex !== pageIndex
+    ) {
       let newPagesToRenderLength = pagesToRenderLength;
 
       if (customPageIndex !== pageIndex) {
