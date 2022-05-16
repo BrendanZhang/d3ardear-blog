@@ -15,6 +15,8 @@ interface IFullPageProps {
   containerWidth?: number | string;
   // 容器编号
   pageNumber?: number;
+  // 从外部控制页码
+  customPageIndex?: number;
   // 如果用户尝试滚出组件的时候的回调
   scrollUnavailableHandler?: () => void;
   // 滑动进入新页面时的回调

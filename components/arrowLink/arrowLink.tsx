@@ -10,25 +10,25 @@ type THref = "blog" | "/" | "portfolio";
 interface IArrowLink {
   color: string;
   order: number;
-  triggerUp: () => void;
-  triggerDown: () => void;
+  clickTrigger: (direction: "up" | "down") => void;
 }
 
 const ArrowLink: React.FC<IArrowLink> = (props) => {
-  const { color, order: key, triggerUp, triggerDown } = props;
+  const { color, order: key, clickTrigger } = props;
+
   const path = useRouter().pathname;
 
   const ArrowIcon: React.FC<{ href: string; down: boolean }> = (props) => {
     const { href, down } = props;
     const buttonLabel = useMemo(() => `to${href}`, [href]);
     return (
-      <Link href={href} style={{ color: color }}>
+      <div style={{ color: color }}>
         {down ? (
           <DownArrowContainer>
             <IconButton
               aria-label={buttonLabel}
               style={{ color: color }}
-              onClick={() => triggerDown()}>
+              onClick={() => clickTrigger("down")}>
               <KeyboardArrowDownIcon style={{ fontSize: "40px", color: "inherit" }} />
             </IconButton>
           </DownArrowContainer>
@@ -37,12 +37,12 @@ const ArrowLink: React.FC<IArrowLink> = (props) => {
             <IconButton
               aria-label={buttonLabel}
               style={{ color: color }}
-              onClick={() => triggerUp()}>
+              onClick={() => clickTrigger("up")}>
               <KeyboardArrowUpIcon style={{ fontSize: "40px", color: "inheirt" }} />
             </IconButton>
           </UpArrowContainer>
         )}
-      </Link>
+      </div>
     );
   };
 

@@ -1,4 +1,5 @@
 import { ConsoleSqlOutlined } from "@ant-design/icons";
+import { Props } from "next/script";
 import React, { ReactElement, useCallback } from "react";
 import {
   useEffect,
@@ -13,7 +14,7 @@ import styled from "styled-components";
 import {
   DEFAULT_ANIMATION_DELAY,
   DEFAULT_ANIMATION_DURATION,
-  DEFAULT_ANIMATION_TIMING_FUNCTION,
+  DEFAULT_ANIMATION_TRANSITION_FUNCTION,
   DEFAULT_CONTAINER_HEIGHT,
   DEFAULT_CONTAINER_WIDTH,
   DEFAULT_PAGE_INDEX,
@@ -47,6 +48,7 @@ const FullPage = (props: IFullPageProps) => {
     animationDelay,
     scrollUnavailableHandler,
     onPageChange,
+    customPageIndex,
   } = props;
   // toArray().length 会返回渲染出的子节点
   // Children.count 会返回所有子节点，无论是否渲染
@@ -68,8 +70,8 @@ const FullPage = (props: IFullPageProps) => {
   const scrollPage = useCallback(
     (nextPageIndex: number) => {
       onBeforePageScroll && onBeforePageScroll(nextPageIndex);
-      wrapperRef.current &&
-        (wrapperRef.current.style.transform = `translate3d(0, ${nextPageIndex * -100}%, 0)`);
+      pageRef.current &&
+        (pageRef.current.style.transform = `translate3d(0, ${nextPageIndex * -100}%, 0)`);
     },
     [onBeforePageScroll]
   );
@@ -213,10 +215,13 @@ const FullPage = (props: IFullPageProps) => {
 
   const keyPress = useCallback(
     (event: KeyboardEvent) => {
+      console.log(event);
       if (event.key === KEY_UP) {
+        console.log(event.key);
         scrollWindow("up");
       }
       if (event.key === KEY_DOWN) {
+        console.log(event.key);
         scrollWindow("down");
       }
     },
@@ -224,6 +229,7 @@ const FullPage = (props: IFullPageProps) => {
   );
   useEffect(() => {
     const wrapper = wrapperRef.current;
+    console.log(wrapper);
     (wrapper as HTMLElement).addEventListener("touchmove", touchMove);
     (wrapper as HTMLElement).addEventListener("keydown", keyPress);
     return () => {
@@ -255,13 +261,63 @@ const FullPage = (props: IFullPageProps) => {
     }
   }, [onPageChange, pageIndex]);
 
+  useEffect(() => {
+    if (customPageIndex && customPageIndex !== null && customPageIndex !== pageIndex) {
+      let newPagesToRenderLength = pagesToRenderLength;
+
+      if (customPageIndex !== pageIndex) {
+        if (!isEmpty(containers.current[customPageIndex as number]) && !isScrolling.current) {
+          isScrolling.current = true;
+          scrollPage(customPageIndex as number);
+
+          if (
+            isEmpty(containers.current[customPageIndex as number]) &&
+            !isEmpty(childrenArr[customPageIndex as number])
+          ) {
+            newPagesToRenderLength++;
+          }
+
+          setTimeout(() => {
+            setPageIndex(customPageIndex);
+            setPagesToRenderLength(newPagesToRenderLength);
+          }, (animationDelay as number) + (animationDuration as number));
+        } else if (!isScrolling.current && !isEmpty(childrenArr[customPageIndex])) {
+          for (let i = pagesToRenderLength; i <= customPageIndex; i++) {
+            newPagesToRenderLength++;
+          }
+
+          if (!isEmpty(childrenArr[customPageIndex])) {
+            newPagesToRenderLength++;
+          }
+
+          isScrolling.current = true;
+          isTransitionAfterPageToRenderChanged.current = true;
+          setPagesToRenderLength(newPagesToRenderLength);
+        }
+      }
+    }
+  }, [customPageIndex, scrollPage]);
+
+  useEffect(() => {
+    if (isTransitionAfterPageToRenderChanged.current) {
+      isTransitionAfterPageToRenderChanged.current = false;
+
+      scrollPage(customPageIndex || 0);
+
+      setTimeout(() => {
+        setPageIndex(customPageIndex || 0);
+      }, (animationDuration as number) + (animationDelay as number));
+    }
+  }, [animationDuration, animationDelay, pagesToRenderLength, customPageIndex, scrollPage]);
+
   return (
     <main ref={wrapperRef} style={wrapperStyle}>
       <div
         ref={pageRef}
         onWheel={wheelScroll}
         style={{
-          ...pageStyle,
+          height: "100%",
+          width: "100%",
           transition: `transform ${animationDuration}ms ${transitionFunction}`,
         }}>
         {setRenderPages()}
@@ -273,11 +329,11 @@ const FullPage = (props: IFullPageProps) => {
 FullPage.defaultProps = {
   animationDuration: DEFAULT_ANIMATION_DURATION,
   animationDelay: DEFAULT_ANIMATION_DELAY,
-  animationTimingFunction: DEFAULT_ANIMATION_TIMING_FUNCTION,
   containerHeight: DEFAULT_CONTAINER_HEIGHT,
   containerWidth: DEFAULT_CONTAINER_WIDTH,
+  transitionFunction: DEFAULT_ANIMATION_TRANSITION_FUNCTION,
   disableScrollUp: false,
   disableScrollDown: false,
-};
+} as Partial<IFullPageProps>;
 
 export default FullPage;

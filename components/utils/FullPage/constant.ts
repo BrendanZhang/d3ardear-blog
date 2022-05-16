@@ -1,5 +1,5 @@
 export const DEFAULT_ANIMATION_DURATION = 1000;
-export const DEFAULT_ANIMATION_TIMING_FUNCTION = "ease-in-out";
+export const DEFAULT_ANIMATION_TRANSITION_FUNCTION = "ease-in-out";
 export const DEFAULT_ANIMATION_DELAY = 200;
 
 export const DEFAULT_CONTAINER_HEIGHT = "100vh";

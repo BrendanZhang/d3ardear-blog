@@ -35,6 +35,7 @@ export const DownArrowContainer = styled.div`
   align-items: center;
   bottom: 8%;
   width: 100%;
+  z-index: 10;
 `;
 
 export const UpArrowContainer = styled(DownArrowContainer)`

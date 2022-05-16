@@ -9,10 +9,29 @@ import {
   HomePageBackgroundImg,
   HomePageMainContainer,
 } from "../components/styledComponents/homePageComponents";
+import FullPage from "../components/utils/FullPage/FullPage";
+import { useMemo, useState } from "react";
 
 const Home: NextPage = () => {
-  const testFunc = () => {
-    console.log("占用");
+  const [pageIndex, setPageIndex] = useState(0);
+  const onClickArrow = (direction: "up" | "down") => {
+    console.log(direction);
+    direction === "down"
+      ? setPageIndex((pageIndex) => pageIndex + 1)
+      : setPageIndex((pageIndex) => pageIndex - 1);
+  };
+  const arrowColor = useMemo(() => (pageIndex === 0 ? "#eee" : "#333"), [pageIndex]);
+  const headerColor = useMemo(() => (pageIndex === 0 ? "light" : "dark"), [pageIndex]);
+  const onBeforePageScroll = (index: number) => {
+    console.log("onBeforePageScroll");
+    console.log(index);
+    console.log("clickArrow", pageIndex);
+  };
+  const handlePageChange = (index: number) => {
+    setPageIndex(index);
+    console.log("handlePageChange");
+    console.log(index);
+    console.log("clickArrow", pageIndex);
   };
   return (
     <div className={styles.container}>
@@ -21,19 +40,24 @@ const Home: NextPage = () => {
         <meta name="description" content=";" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header mode="light" />
-      <HomePageMainContainer key={0} className="section">
-        <HomePageBackgroundImg />
-        <ArrowLink order={0} color="#eeeeee" triggerUp={testFunc} triggerDown={testFunc} />
-      </HomePageMainContainer>
-      <FullPageMain key={1} className="section">
-        <div>这是博客</div>
-        <ArrowLink order={1} color="#333" triggerUp={testFunc} triggerDown={testFunc} />
-      </FullPageMain>
-      <FullPageMain key={2} className="section">
-        <div>这是项目</div>
-        <ArrowLink order={2} color="#333" triggerUp={testFunc} triggerDown={testFunc} />
-      </FullPageMain>
+      <Header mode={headerColor} />
+
+      <ArrowLink order={pageIndex} color={arrowColor} clickTrigger={onClickArrow} />
+
+      <FullPage
+        onBeforePageScroll={onBeforePageScroll}
+        onPageChange={handlePageChange}
+        customPageIndex={pageIndex}>
+        <HomePageMainContainer key={0} className="section">
+          <HomePageBackgroundImg />
+        </HomePageMainContainer>
+        <FullPageMain key={1} className="section">
+          <div>这是博客</div>
+        </FullPageMain>
+        <FullPageMain key={2} className="section">
+          <div>这是项目</div>
+        </FullPageMain>
+      </FullPage>
       <Footer />
     </div>
   );

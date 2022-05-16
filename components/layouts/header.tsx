@@ -46,6 +46,7 @@ const HeaderContainer = styled.header({
   width: "100%",
   top: 0,
   color: "white",
+  zIndex: 10,
 });
 
 export default Header;
