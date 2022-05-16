@@ -1,5 +1,5 @@
 import { ConsoleSqlOutlined } from "@ant-design/icons";
-import React, { useCallback } from "react";
+import React, { ReactElement, useCallback } from "react";
 import {
   useEffect,
   useLayoutEffect,
@@ -10,18 +10,31 @@ import {
   WheelEventHandler,
 } from "react";
 import styled from "styled-components";
-import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_TO_RENDER_LENGTH, DISABLED_CLASS_NAME } from "./constant";
+import {
+  DEFAULT_ANIMATION_DELAY,
+  DEFAULT_ANIMATION_DURATION,
+  DEFAULT_ANIMATION_TIMING_FUNCTION,
+  DEFAULT_CONTAINER_HEIGHT,
+  DEFAULT_CONTAINER_WIDTH,
+  DEFAULT_PAGE_INDEX,
+  DEFAULT_PAGE_TO_RENDER_LENGTH,
+  DISABLED_CLASS_NAME,
+  KEY_DOWN,
+  KEY_UP,
+  MINIMAL_DELTA_Y,
+} from "./constant";
 import { usePrevIndex } from "./FullPageHooks";
 import { pageStyle, wrapperStyle } from "./styles";
 import { isEmpty } from "./utils";
 
 const FullPage = (props: IFullPageProps) => {
   // flag 变量
-  const previousTouchMove = useRef(null),
-    isScrolling = useRef(false),
-    isMounted = useRef(false),
-    isBodyScrollEnabled = useRef(true),
-    isTransitionAfterPageToRenderChanged = useRef(false);
+  const previousTouchMove = useRef<number | null>(null),
+    isScrolling = useRef<boolean>(false),
+    isMounted = useRef<boolean>(false),
+    isBodyScrollEnabled = useRef<boolean>(true),
+    isTransitionAfterPageToRenderChanged = useRef<boolean>(false),
+    containers = useRef<boolean[]>([]);
 
   const {
     children,
@@ -29,20 +42,27 @@ const FullPage = (props: IFullPageProps) => {
     animationDuration,
     transitionFunction,
     renderAllPagesOnMount,
+    disableScrollDown,
+    disableScrollUp,
+    animationDelay,
+    scrollUnavailableHandler,
+    onPageChange,
   } = props;
   // toArray().length 会返回渲染出的子节点
   // Children.count 会返回所有子节点，无论是否渲染
-  const childrenArr = useMemo(() => React.Children.toArray(children), [children]);
+  const childrenArr = useMemo<React.ReactNode[]>(
+    () => React.Children.toArray(children),
+    [children]
+  );
 
   // 页码
   const [pageIndex, setPageIndex] = useState(DEFAULT_PAGE_INDEX);
-  const [pageToRenderLength, setPageToRenderLength] = useState(DEFAULT_PAGE_TO_RENDER_LENGTH);
+  const [pagesToRenderLength, setPagesToRenderLength] = useState(DEFAULT_PAGE_TO_RENDER_LENGTH);
   const prevPageIndex = usePrevIndex(pageIndex);
 
   // 获取元素
-  const wrapperRef = useRef<HTMLDivElement>(null),
-    pageRef = useRef<HTMLDivElement>(null),
-    lastScrollElRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null),
+    pageRef = useRef<HTMLDivElement | null>(null);
 
   // 滚动函数
   const scrollPage = useCallback(
@@ -54,26 +74,27 @@ const FullPage = (props: IFullPageProps) => {
     [onBeforePageScroll]
   );
 
-  // 滚动动画的时候中间有可能同时有多个页面被渲染（比如从 2 到 0）
+  // 滚动动画的时候中间有可能同时有多个页面被渲染（比如从 0 到 2）
   // 这时候需要挂载多个 page
   const addNextPage = useCallback(
-    (pagesToRenderAndMountLength: number) => {
+    (pagesToRenderAndMountLength: number | null) => {
       let templateLength = 0;
-      !isEmpty(pagesToRenderAndMountLength) && (templateLength = pagesToRenderAndMountLength);
+      !isEmpty(pagesToRenderAndMountLength) &&
+        (templateLength = pagesToRenderAndMountLength as number);
 
       // 看一下需要多渲染几个，是不是和现在需要渲染的子节点数一样多
-      templateLength = Math.max(templateLength, pageToRenderLength);
+      templateLength = Math.max(templateLength, pagesToRenderLength);
       // 如果只需要多加一个，而且新增的页面存在，那就添加一个
       templateLength <= pageIndex + 1 && !isEmpty(childrenArr[pageIndex + 1]) && templateLength++;
-      setPageToRenderLength(templateLength);
+      setPagesToRenderLength(templateLength);
     },
-    [pageToRenderLength, pageIndex, childrenArr]
+    [pagesToRenderLength, pageIndex, childrenArr]
   );
 
   const checkRenderOnMount = useCallback(() => {
     if (renderAllPagesOnMount) {
       // 如果设定首次渲染就渲染所有页面，则记录所有节点数
-      setPageToRenderLength(React.Children.count(children));
+      setPagesToRenderLength(React.Children.count(children));
     } else if (!isEmpty(childrenArr[DEFAULT_PAGE_INDEX + 1])) {
       addNextPage(DEFAULT_PAGE_TO_RENDER_LENGTH + 1);
     }
@@ -101,19 +122,162 @@ const FullPage = (props: IFullPageProps) => {
     }
   }, []);
 
-  const setRenderPages = useCallback(() => {}, []);
+  const setRenderPages = useCallback(() => {
+    const newPageToRender = [];
+    let i = 0;
+    while (i < pagesToRenderLength && !isEmpty(childrenArr[i])) {
+      containers.current[i] = true;
+      newPageToRender.push(
+        <div key={i} style={{ height: "100%", width: "100%" }}>
+          {React.cloneElement((childrenArr as ReactElement[])[i], {
+            ...(childrenArr as ReactElement[])[i].props,
+          })}
+        </div>
+      );
+      i++;
+    }
+    return newPageToRender;
+  }, [childrenArr, pagesToRenderLength]);
+
+  const scrollWindow = useCallback(
+    (direction: "up" | "down") => {
+      const directionData = {
+        down: {
+          indexMove: 1,
+          disableCheck: disableScrollDown,
+        },
+        up: {
+          indexMove: -1,
+          disableCheck: disableScrollUp,
+        },
+      };
+      if (!isScrolling.current && !directionData[direction].disableCheck) {
+        if (!isEmpty(containers.current[pageIndex + directionData[direction].indexMove])) {
+          disableScroll();
+          isScrolling.current = true;
+          scrollPage(pageIndex + directionData[direction].indexMove);
+
+          setTimeout(() => {
+            if (isMounted) {
+              setPageIndex((prevState) => prevState + directionData[direction].indexMove);
+            }
+          }, (animationDuration as number) + (animationDelay as number));
+        } else {
+          enableScroll();
+          if (scrollUnavailableHandler) {
+            scrollUnavailableHandler();
+          }
+        }
+      }
+    },
+    [
+      animationDuration,
+      animationDelay,
+      disableScrollDown,
+      disableScrollUp,
+      pageIndex,
+      disableScroll,
+      enableScroll,
+      scrollUnavailableHandler,
+      scrollPage,
+    ]
+  );
+
+  const wheelScroll = useCallback(
+    (event: WheelEvent) => {
+      if (Math.abs(event.deltaY) > MINIMAL_DELTA_Y) {
+        if (event.deltaY > 0) {
+          scrollWindow("down");
+        } else {
+          scrollWindow("up");
+        }
+      }
+    },
+    [scrollWindow]
+  );
+
+  const touchMove = useCallback(
+    (event: TouchEvent) => {
+      if (!isEmpty(previousTouchMove.current)) {
+        if (event.touches[0].clientY > (previousTouchMove.current as number)) {
+          scrollWindow("up");
+        } else {
+          scrollWindow("down");
+        }
+      } else {
+        previousTouchMove.current = event.touches[0].clientY;
+      }
+    },
+    [scrollWindow]
+  );
+
+  const keyPress = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === KEY_UP) {
+        scrollWindow("up");
+      }
+      if (event.key === KEY_DOWN) {
+        scrollWindow("down");
+      }
+    },
+    [scrollWindow]
+  );
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    (wrapper as HTMLElement).addEventListener("touchmove", touchMove);
+    (wrapper as HTMLElement).addEventListener("keydown", keyPress);
+    return () => {
+      (wrapper as HTMLElement).removeEventListener("touchmove", touchMove);
+      (wrapper as HTMLElement).removeEventListener("keydown", keyPress);
+    };
+  }, [touchMove, keyPress]);
+
+  useEffect(() => {
+    isMounted.current = true;
+    checkRenderOnMount();
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+  // 初始化
+  useEffect(() => {
+    isScrolling.current = false;
+    previousTouchMove.current = null;
+    if (pageIndex > prevPageIndex) {
+      addNextPage(null);
+    }
+  }, [addNextPage, pageIndex, prevPageIndex]);
+
+  // 滑动到新页面时调用钩子
+  useEffect(() => {
+    if (onPageChange) {
+      onPageChange(pageIndex);
+    }
+  }, [onPageChange, pageIndex]);
 
   return (
     <main ref={wrapperRef} style={wrapperStyle}>
       <div
         ref={pageRef}
+        onWheel={wheelScroll}
         style={{
           ...pageStyle,
           transition: `transform ${animationDuration}ms ${transitionFunction}`,
-        }}></div>
-      {props.children}
+        }}>
+        {setRenderPages()}
+      </div>
     </main>
   );
+};
+
+FullPage.defaultProps = {
+  animationDuration: DEFAULT_ANIMATION_DURATION,
+  animationDelay: DEFAULT_ANIMATION_DELAY,
+  animationTimingFunction: DEFAULT_ANIMATION_TIMING_FUNCTION,
+  containerHeight: DEFAULT_CONTAINER_HEIGHT,
+  containerWidth: DEFAULT_CONTAINER_WIDTH,
+  disableScrollUp: false,
+  disableScrollDown: false,
 };
 
 export default FullPage;
