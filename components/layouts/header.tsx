@@ -15,20 +15,23 @@ const Header: React.FC<IHeader> = (props) => {
   const isLight = useMemo(() => mode === "light", [mode]);
   const IconStyle = {
     fontsize: "20px",
-    color: isLight ? "#eeeeee" : "#333333",
+    color: "inherit",
     margin: "0 0.5em",
     transition: "color 300ms",
   };
+  const HeaderContainerStyle = {
+    color: isLight ? "#eeeeee" : "#333333",
+  };
   return (
-    <HeaderContainer>
+    <HeaderContainer style={HeaderContainerStyle}>
       <div></div>
       <div>
-        <Link href="blog/archive">
+        <Link href="/blog">
           <IconButton aria-label="blog" style={IconStyle}>
             <TextSnippet />
           </IconButton>
         </Link>
-        <Link href="portfolio/archive">
+        <Link href="/portfolio">
           <IconButton aria-label="github" style={IconStyle}>
             <GithubFilled />
           </IconButton>

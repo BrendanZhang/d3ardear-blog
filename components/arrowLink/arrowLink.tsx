@@ -8,7 +8,7 @@ import { DownArrowContainer, UpArrowContainer } from "./styledArrow";
 
 type THref = "blog" | "/" | "portfolio";
 interface IArrowLink {
-  color: string;
+  color: "light" | "dark";
   order: number;
   clickTrigger: (direction: "up" | "down") => void;
 }
@@ -22,7 +22,7 @@ const ArrowLink: React.FC<IArrowLink> = (props) => {
     const { href, down } = props;
     const buttonLabel = useMemo(() => `to${href}`, [href]);
     const colorStyle = {
-      color: color,
+      color: color === "light" ? "#eeeeee" : "#333333",
       transition: "color 300ms",
     };
     return (
@@ -31,7 +31,7 @@ const ArrowLink: React.FC<IArrowLink> = (props) => {
           <DownArrowContainer>
             <IconButton
               aria-label={buttonLabel}
-              style={colorStyle}
+              style={{ color: "inherit" }}
               onClick={() => clickTrigger("down")}>
               <KeyboardArrowDownIcon style={{ fontSize: "40px", color: "inherit" }} />
             </IconButton>
@@ -40,7 +40,7 @@ const ArrowLink: React.FC<IArrowLink> = (props) => {
           <UpArrowContainer>
             <IconButton
               aria-label={buttonLabel}
-              style={colorStyle}
+              style={{ color: "inherit" }}
               onClick={() => clickTrigger("up")}>
               <KeyboardArrowUpIcon style={{ fontSize: "40px", color: "inheirt" }} />
             </IconButton>

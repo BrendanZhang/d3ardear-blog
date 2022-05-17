@@ -33,14 +33,14 @@ export const DownArrowContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: 8%;
+  bottom: 5%;
   width: 100%;
   z-index: 10;
 `;
 
 export const UpArrowContainer = styled(DownArrowContainer)`
   animation: ${bounceUp} 2s linear infinite;
-  top: 8%;
+  top: 5%;
 `;
 
 export const ArrowContainer = styled.div`

@@ -1,16 +1,5 @@
-import { ConsoleSqlOutlined } from "@ant-design/icons";
-import { Props } from "next/script";
 import React, { ReactElement, useCallback } from "react";
-import {
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-  WheelEvent,
-  WheelEventHandler,
-} from "react";
-import styled from "styled-components";
+import { useEffect, useMemo, useRef, useState, WheelEvent } from "react";
 import {
   DEFAULT_ANIMATION_DELAY,
   DEFAULT_ANIMATION_DURATION,
@@ -25,7 +14,7 @@ import {
   MINIMAL_DELTA_Y,
 } from "./constant";
 import { usePrevIndex } from "./FullPageHooks";
-import { pageStyle, wrapperStyle } from "./styles";
+import { wrapperStyle } from "./styles";
 import { isEmpty } from "./utils";
 
 const FullPage = (props: IFullPageProps) => {
@@ -215,13 +204,10 @@ const FullPage = (props: IFullPageProps) => {
 
   const keyPress = useCallback(
     (event: KeyboardEvent) => {
-      console.log(event);
       if (event.key === KEY_UP) {
-        console.log(event.key);
         scrollWindow("up");
       }
       if (event.key === KEY_DOWN) {
-        console.log(event.key);
         scrollWindow("down");
       }
     },
@@ -314,7 +300,7 @@ const FullPage = (props: IFullPageProps) => {
   }, [animationDuration, animationDelay, pagesToRenderLength, customPageIndex, scrollPage]);
 
   return (
-    <main ref={wrapperRef} style={wrapperStyle}>
+    <main ref={wrapperRef} style={wrapperStyle} tabIndex={1}>
       <div
         ref={pageRef}
         onWheel={wheelScroll}

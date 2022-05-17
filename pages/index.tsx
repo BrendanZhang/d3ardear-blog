@@ -17,18 +17,11 @@ const Home: NextPage = () => {
   const onClickArrow = (direction: "up" | "down") => {
     direction === "down" ? handlePageChange(pageIndex + 1) : handlePageChange(pageIndex - 1);
   };
-  const arrowColor = useMemo(() => (pageIndex === 0 ? "#eee" : "#333"), [pageIndex]);
-  const headerColor = useMemo(() => (pageIndex === 0 ? "light" : "dark"), [pageIndex]);
-  const onBeforePageScroll = (index: number) => {
-    console.log("onBeforePageScroll");
-    console.log(index);
-  };
+  const themeColor = useMemo(() => (pageIndex === 0 ? "light" : "dark"), [pageIndex]);
+  const onBeforePageScroll = (index: number) => {};
   const handlePageChange = (index: number) => {
-    console.log("触发handler");
     setPageIndex(index);
-    console.log(index);
   };
-  console.log("clickArrow", pageIndex);
 
   const PageButton = () => {
     const pageNumbers = [];
@@ -49,9 +42,8 @@ const Home: NextPage = () => {
         <meta name="description" content=";" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header mode={headerColor} />
-      <ArrowLink order={pageIndex} color={arrowColor} clickTrigger={onClickArrow} />
-
+      <Header mode={themeColor} />
+      <ArrowLink order={pageIndex} color={themeColor} clickTrigger={onClickArrow} />
       <FullPage
         onBeforePageScroll={onBeforePageScroll}
         onPageChange={handlePageChange}
