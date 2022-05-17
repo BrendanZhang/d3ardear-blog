@@ -33,7 +33,7 @@ export const DownArrowContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: 5%;
+  bottom: 50px;
   width: 100%;
   z-index: 10;
 `;

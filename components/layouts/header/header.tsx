@@ -43,7 +43,7 @@ const Header: React.FC<IHeader> = (props) => {
 
 const HeaderContainer = styled.header({
   display: "flex",
-  justifyContent: "flex-end",
+  justifyContent: "space-between",
   alignItems: "center",
   padding: "20px",
   position: "absolute",

@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Footer from "../components/layouts/footer";
-import Header from "../components/layouts/header";
+import Header from "../components/layouts/header/header";
 import ArrowLink from "../components/arrowLink/arrowLink";
 import { FullPageMain } from "../components/styledComponents/fullPageMain";
 import {
@@ -11,10 +11,12 @@ import {
 } from "../components/styledComponents/homePageComponents";
 import FullPage from "../components/utils/FullPage/FullPage";
 import { useMemo, useState } from "react";
+import { HomePageBlog } from "../components/home/homeBlog/homeBlog";
 
 const Home: NextPage = () => {
   const [pageIndex, setPageIndex] = useState(0);
   const onClickArrow = (direction: "up" | "down") => {
+    console.log("clickDown");
     direction === "down" ? handlePageChange(pageIndex + 1) : handlePageChange(pageIndex - 1);
   };
   const themeColor = useMemo(() => (pageIndex === 0 ? "light" : "dark"), [pageIndex]);
@@ -23,18 +25,6 @@ const Home: NextPage = () => {
     setPageIndex(index);
   };
 
-  const PageButton = () => {
-    const pageNumbers = [];
-
-    for (let i = 1; i <= 3; i++) {
-      pageNumbers.push(
-        <button key={i} onClick={() => handlePageChange(i - 1)}>
-          {i}
-        </button>
-      );
-    }
-    return <>{[...pageNumbers]}</>;
-  };
   return (
     <div className={styles.container}>
       <Head>
@@ -52,7 +42,7 @@ const Home: NextPage = () => {
           <HomePageBackgroundImg />
         </HomePageMainContainer>
         <FullPageMain key={1} className="section">
-          <div>这是博客</div>
+          <HomePageBlog />
         </FullPageMain>
         <FullPageMain key={2} className="section">
           <div>这是项目</div>
