@@ -13,7 +13,7 @@ interface IArrowLink {
 }
 
 const ArrowLink: React.FC<IArrowLink> = (props) => {
-  const { color, order: key, clickTrigger } = props;
+  const { color, order, clickTrigger } = props;
   const path = useRouter().pathname;
 
   const ArrowIcon: React.FC<{ href: string; down: boolean }> = (props) => {
@@ -48,7 +48,7 @@ const ArrowLink: React.FC<IArrowLink> = (props) => {
     );
   };
 
-  return <ArrowIcon href="blog" down />;
+  return order === 2 ? <></> : <ArrowIcon href="blog" down />;
 };
 
 export default ArrowLink;

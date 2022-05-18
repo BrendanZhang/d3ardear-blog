@@ -12,6 +12,7 @@ import {
 import FullPage from "../components/utils/FullPage/FullPage";
 import { useMemo, useState } from "react";
 import { HomePageBlog } from "../components/home/homeBlog/homeBlog";
+import { HomePageProject } from "../components/home/homePortfolio/homePortfolio";
 
 const Home: NextPage = () => {
   const [pageIndex, setPageIndex] = useState(0);
@@ -45,7 +46,7 @@ const Home: NextPage = () => {
           <HomePageBlog />
         </FullPageMain>
         <FullPageMain key={2} className="section">
-          <div>这是项目</div>
+          <HomePageProject />
         </FullPageMain>
       </FullPage>
       <Footer />
