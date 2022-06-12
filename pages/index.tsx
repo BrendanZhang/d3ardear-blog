@@ -31,7 +31,7 @@ const Home: NextPage = () => {
       <Head>
         <title>D3arDear</title>
         <meta name="description" content=";" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/icon.png" />
       </Head>
       {pageIndex === 0 && <Header mode={themeColor} />}
       <ArrowLink order={pageIndex} color={themeColor} clickTrigger={onClickArrow} />

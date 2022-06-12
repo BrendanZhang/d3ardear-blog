@@ -41,7 +41,7 @@ const FullPageScroll = (props: IFullPageProps) => {
     minimalScrollDistance,
   } = props;
   // toArray().length 会返回渲染出的子节点
-  // Children.count 会返回所有子节点，无论是否渲染
+  // Children.count 会返回所有子节点数，无论是否渲染
   const childrenArr = useMemo<React.ReactNode[]>(
     () => React.Children.toArray(children),
     [children]
