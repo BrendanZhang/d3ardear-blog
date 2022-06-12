@@ -1,5 +1,5 @@
 import { GithubFilled } from "@ant-design/icons";
-import { TextSnippet } from "@mui/icons-material";
+import { AppsRounded, TextSnippet } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import Link from "next/link";
 import { useMemo } from "react";
@@ -33,7 +33,7 @@ const Header: React.FC<IHeader> = (props) => {
         </Link>
         <Link href="/portfolio">
           <IconButton aria-label="github" style={IconStyle}>
-            <GithubFilled />
+            <AppsRounded />
           </IconButton>
         </Link>
       </div>

@@ -9,7 +9,7 @@ import {
   HomePageBackgroundImg,
   HomePageMainContainer,
 } from "../components/styledComponents/homePageComponents";
-import FullPage from "../components/utils/FullPage/FullPage";
+import FullPageScroll from "../components/utils/FullPage/FullPage";
 import { useMemo, useState } from "react";
 import { HomePageBlog } from "../components/home/homeBlog/homeBlog";
 import { HomePageProject } from "../components/home/homePortfolio/homePortfolio";
@@ -33,12 +33,13 @@ const Home: NextPage = () => {
         <meta name="description" content=";" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header mode={themeColor} />
+      {pageIndex === 0 && <Header mode={themeColor} />}
       <ArrowLink order={pageIndex} color={themeColor} clickTrigger={onClickArrow} />
-      <FullPage
+      <FullPageScroll
         onBeforePageScroll={onBeforePageScroll}
         onPageChange={handlePageChange}
-        customPageIndex={pageIndex}>
+        customPageIndex={pageIndex}
+        minimalScrollDistance={3}>
         <HomePageMainContainer key={0} className="section">
           <HomePageBackgroundImg />
         </HomePageMainContainer>
@@ -48,7 +49,7 @@ const Home: NextPage = () => {
         <FullPageMain key={2} className="section">
           <HomePageProject />
         </FullPageMain>
-      </FullPage>
+      </FullPageScroll>
       <Footer />
     </div>
   );

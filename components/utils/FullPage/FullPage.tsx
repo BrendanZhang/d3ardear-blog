@@ -17,7 +17,7 @@ import { usePrevIndex } from "./FullPageHooks";
 import { wrapperStyle } from "./styles";
 import { isEmpty } from "./utils";
 
-const FullPage = (props: IFullPageProps) => {
+const FullPageScroll = (props: IFullPageProps) => {
   // flag 变量
   const previousTouchMove = useRef<number | null>(null),
     isScrolling = useRef<boolean>(false),
@@ -38,6 +38,7 @@ const FullPage = (props: IFullPageProps) => {
     scrollUnavailableHandler,
     onPageChange,
     customPageIndex,
+    minimalScrollDistance,
   } = props;
   // toArray().length 会返回渲染出的子节点
   // Children.count 会返回所有子节点，无论是否渲染
@@ -176,12 +177,9 @@ const FullPage = (props: IFullPageProps) => {
 
   const wheelScroll = useCallback(
     (event: WheelEvent) => {
-      if (Math.abs(event.deltaY) > MINIMAL_DELTA_Y) {
-        if (event.deltaY > 0) {
-          scrollWindow("down");
-        } else {
-          scrollWindow("up");
-        }
+      const absDeltaY = Math.abs(event.deltaY);
+      if (minimalScrollDistance ? absDeltaY > minimalScrollDistance : absDeltaY > MINIMAL_DELTA_Y) {
+        event.deltaY > 0 ? scrollWindow("down") : scrollWindow("up");
       }
     },
     [scrollWindow]
@@ -315,7 +313,7 @@ const FullPage = (props: IFullPageProps) => {
   );
 };
 
-FullPage.defaultProps = {
+FullPageScroll.defaultProps = {
   animationDuration: DEFAULT_ANIMATION_DURATION,
   animationDelay: DEFAULT_ANIMATION_DELAY,
   containerHeight: DEFAULT_CONTAINER_HEIGHT,
@@ -325,4 +323,4 @@ FullPage.defaultProps = {
   disableScrollDown: false,
 } as Partial<IFullPageProps>;
 
-export default FullPage;
+export default FullPageScroll;

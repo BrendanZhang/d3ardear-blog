@@ -5,7 +5,7 @@ import Head from "next/head";
 import ArrowLink from "../components/arrowLink/arrowLink";
 import { FullPageMain } from "../components/styledComponents/fullPageMain";
 import styled from "styled-components";
-import FullPage from "../components/utils/FullPage/FullPage";
+import FullPageScroll from "../components/utils/FullPage/FullPage";
 import FullPageWrapper from "../components/utils/FullPage/FullPageWrapper";
 const MainContainer = styled.main`
   width: 100vw;
@@ -27,7 +27,7 @@ const TestFullPage = () => {
       <Head>
         <title>My styled page</title>
       </Head>
-      <FullPage>
+      <FullPageScroll>
         <FullPageWrapper>
           <FullPageMain>1</FullPageMain>
         </FullPageWrapper>
@@ -37,7 +37,7 @@ const TestFullPage = () => {
         <FullPageWrapper>
           <FullPageMain>3</FullPageMain>
         </FullPageWrapper>
-      </FullPage>
+      </FullPageScroll>
     </div>
   );
 };

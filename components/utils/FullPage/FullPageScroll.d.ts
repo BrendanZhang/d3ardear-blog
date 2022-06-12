@@ -27,4 +27,6 @@ interface IFullPageProps {
   renderAllPagesOnMount?: boolean;
   // 自定义时间函数
   transitionFunction?: string;
+  // 最小滑动触发距离
+  minimalScrollDistance?: number;
 }
