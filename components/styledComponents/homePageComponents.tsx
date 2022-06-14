@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const HomePageMainContainer = styled.main`
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(45deg, #2c3033 100%, #2c3033 90%);
   display: flex;
 `;

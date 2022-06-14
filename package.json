@@ -16,7 +16,7 @@
     "@mui/material": "^5.7.0",
     "@mui/styled-engine-sc": "^5.7.0",
     "antd": "^4.20.4",
-    "framer-motion": "^6.3.3",
+    "framer-motion": "^6.3.11",
     "next": "12.1.6",
     "react": "18.1.0",
     "react-dom": "18.1.0",
