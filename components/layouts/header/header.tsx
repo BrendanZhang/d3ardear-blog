@@ -6,55 +6,16 @@ import React, { ReactNode, useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 import { media } from "../../constant/media";
 import { HeaderContainer, HeaderAction } from "../../styledComponents/header";
+import { ActionButtons } from "./actionButton";
 import Icon from "./icon";
 import IconWithTitle from "./iconWithTitle";
 import { MenuIcon } from "./menuIcon";
+import { MobileAction } from "./mobileActionDrawer";
 
 interface IHeader {
   mode: "light" | "dark";
   sticky?: boolean;
 }
-
-const ActionButtons: React.FC<{ device: "mobile" | "desktop" }> = (props) => {
-  const { device } = props;
-  const ActionButtonGenerator = (device: "mobile" | "desktop") => {
-    const IconStyle = {
-      fontsize: "20px",
-      color: "inherit",
-      margin: "0 0.5em",
-      transition: "color 300ms",
-    };
-    return device === "mobile"
-      ? [
-          <Button aria-label="blog" style={IconStyle}>
-            BLOG
-          </Button>,
-          <Button aria-label="github" style={IconStyle}>
-            PROJECT
-          </Button>,
-          // <IconButton aria-label="blog" style={IconStyle}>
-          //   <NotesRounded />
-          // </IconButton>,
-          // <IconButton aria-label="github" style={IconStyle}>
-          //   <AppsRounded />
-          // </IconButton>,
-        ]
-      : [
-          <Button aria-label="blog" style={IconStyle}>
-            BLOG
-          </Button>,
-          <Button aria-label="github" style={IconStyle}>
-            PROJECT
-          </Button>,
-        ];
-  };
-  return (
-    <>
-      <Link href="/blog">{ActionButtonGenerator(device)[0]}</Link>
-      <Link href="/portfolio">{ActionButtonGenerator(device)[1]}</Link>
-    </>
-  );
-};
 
 const Header: React.FC<IHeader> = (props) => {
   const { mode, sticky } = props;
@@ -68,7 +29,7 @@ const Header: React.FC<IHeader> = (props) => {
   const IconStyle = {
     fontSize: "20px",
     color: "inherit",
-    // margin: "0 0.5em",
+    zIndex: "10",
     transition: "all 300ms",
     filter: menuActive
       ? "drop-shadow(rgb(240, 73, 44) 0px 0px 2px)"
@@ -85,19 +46,23 @@ const Header: React.FC<IHeader> = (props) => {
           {/* <Icon fill={HeaderContainerStyle.color} height="46px" /> */}
           <IconWithTitle fill={HeaderContainerStyle.color} height="46px" />
         </StyledIconContainer>
-        <DesktopAction>
-          <ActionButtons device="desktop" />
-        </DesktopAction>
-        <MobileAction>
-          <ActionButtons device="mobile" />
-        </MobileAction>
+        {menuActive && (
+          <DesktopAction>
+            <ActionButtons device="desktop" active={true} />
+          </DesktopAction>
+        )}
+        {menuActive && (
+          <MobileAction active={true}>
+            <ActionButtons device="mobile" active={true} />
+          </MobileAction>
+        )}
         <div>
           <IconButton aria-label="github" style={IconStyle} onClick={onClickMenu}>
             <MenuIcon
               active={menuActive}
               width="30px"
               height="30px"
-              fill={HeaderContainerStyle.color}
+              fill={menuActive ? "#eeeeee" : HeaderContainerStyle.color}
             />
           </IconButton>
         </div>
@@ -105,14 +70,6 @@ const Header: React.FC<IHeader> = (props) => {
     </HeaderContainer>
   );
 };
-const MobileAction = styled.div`
-  display: inline-flex;
-  color: inherit;
-
-  ${media("tablet")} {
-    display: none;
-  }
-`;
 
 const DesktopAction = styled.div`
   display: none;
