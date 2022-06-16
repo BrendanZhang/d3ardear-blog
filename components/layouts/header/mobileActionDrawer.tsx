@@ -1,3 +1,4 @@
+import { motion, MotionConfig } from "framer-motion";
 import { PropsWithChildren } from "react";
 import styled from "styled-components";
 import { media } from "../../constant/media";
@@ -10,16 +11,41 @@ type TMobileActionProps = {
 export const MobileAction: React.FC<PropsWithChildren<TMobileActionProps>> = (props) => {
   const { children } = props;
   return (
-    <MobileActionContainer>
-      <section>{children}</section>
+    <MobileActionContainer
+      animate="enter"
+      exit="exit"
+      initial="initial"
+      variants={{
+        enter: {
+          opacity: 1,
+          y: 0,
+          x: 0,
+          transition: { duration: 0.3, ease: [0.48, 0.15, 0.25, 0.96] },
+        },
+        exit: {
+          opacity: 0,
+          y: 0,
+          x: -100,
+          transition: { duration: 0.3, ease: [0.48, 0.15, 0.25, 0.96] },
+        },
+        initial: {
+          opacity: 0,
+          y: 0,
+          x: -100,
+          transition: { duration: 0.3, ease: [0.48, 0.15, 0.25, 0.96] },
+        },
+      }}>
+      {children}
     </MobileActionContainer>
   );
 };
-const MobileActionContainer = styled.div`
+const MobileActionContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   color: inherit;
   justify-content: center;
+  align-items: flex-start;
+  padding-left: 20px;
   position: absolute;
   height: 100vh;
   color: #eeeeee;

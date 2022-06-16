@@ -1,6 +1,7 @@
 import { GithubFilled } from "@ant-design/icons";
 import { AppsRounded, NotesRounded, TextSnippet } from "@mui/icons-material";
 import { Button, IconButton } from "@mui/material";
+import { AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import React, { ReactNode, useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
@@ -51,11 +52,14 @@ const Header: React.FC<IHeader> = (props) => {
             <ActionButtons device="desktop" active={true} />
           </DesktopAction>
         )}
-        {menuActive && (
-          <MobileAction active={true}>
-            <ActionButtons device="mobile" active={true} />
-          </MobileAction>
-        )}
+
+        <AnimatePresence exitBeforeEnter>
+          {menuActive && (
+            <MobileAction active={true}>
+              <ActionButtons device="mobile" active={true} />
+            </MobileAction>
+          )}
+        </AnimatePresence>
         <div>
           <IconButton aria-label="github" style={IconStyle} onClick={onClickMenu}>
             <MenuIcon
