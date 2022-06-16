@@ -14,16 +14,22 @@ import { useMemo, useState } from "react";
 import { HomePageBlog } from "../components/home/homeBlog/homeBlog";
 import { HomePageProject } from "../components/home/homePortfolio/homePortfolio";
 import { MotionWrapper } from "../components/common/motionWrapper";
+import { motion } from "framer-motion";
+import { motionVariants } from "../components/constant/animation";
 
 const Home: NextPage = () => {
   const [pageIndex, setPageIndex] = useState(0);
+  const [headerVisible, setHeaderVisible] = useState(true);
 
   const onClickArrow = (direction: "up" | "down") => {
     console.log("clickDown");
     direction === "down" ? handlePageChange(pageIndex + 1) : handlePageChange(pageIndex - 1);
   };
   const themeColor = useMemo(() => (pageIndex === 0 ? "light" : "dark"), [pageIndex]);
-  const onBeforePageScroll = (index: number) => {};
+  const onBeforePageScroll = (index: number) => {
+    console.log(index);
+    index === 0 ? setHeaderVisible(true) : setHeaderVisible(false);
+  };
   const handlePageChange = (index: number) => {
     setPageIndex(index);
   };
@@ -35,26 +41,24 @@ const Home: NextPage = () => {
         <meta name="description" content=";" />
         <link rel="icon" href="/icon.png" />
       </Head>
-      <MotionWrapper>
-        {pageIndex === 0 && <Header mode={themeColor} />}
-        <ArrowLink order={pageIndex} color={themeColor} clickTrigger={onClickArrow} />
-        <FullPageScroll
-          onBeforePageScroll={onBeforePageScroll}
-          onPageChange={handlePageChange}
-          customPageIndex={pageIndex}
-          minimalScrollDistance={3}>
-          <HomePageMainContainer key={0} className="section">
-            <HomePageBackgroundImg />
-          </HomePageMainContainer>
-          <FullPageMain key={1} className="section">
-            <HomePageBlog />
-          </FullPageMain>
-          <FullPageMain key={2} className="section">
-            <HomePageProject />
-          </FullPageMain>
-        </FullPageScroll>
-        <Footer />
-      </MotionWrapper>
+      {pageIndex === 0 && <Header mode={themeColor} />}
+      <ArrowLink order={pageIndex} color={themeColor} clickTrigger={onClickArrow} />
+      <FullPageScroll
+        onBeforePageScroll={onBeforePageScroll}
+        onPageChange={handlePageChange}
+        customPageIndex={pageIndex}
+        minimalScrollDistance={3}>
+        <HomePageMainContainer key={0} className="section">
+          <HomePageBackgroundImg />
+        </HomePageMainContainer>
+        <FullPageMain key={1} className="section">
+          <HomePageBlog />
+        </FullPageMain>
+        <FullPageMain key={2} className="section">
+          <HomePageProject />
+        </FullPageMain>
+      </FullPageScroll>
+      <Footer />
     </div>
   );
 };

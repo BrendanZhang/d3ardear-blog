@@ -16,7 +16,7 @@ export const HeaderAction = styled.header`
   justify-content: space-between;
   align-items: center;
   margin: auto;
-  max-width: 1200px;
+  width: 100%;
   flex: 1;
   top: 0;
   color: white;

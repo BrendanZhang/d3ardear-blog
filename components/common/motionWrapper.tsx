@@ -7,14 +7,32 @@ import React, {
   useEffect,
   useMemo,
   useState,
+  useContext,
 } from "react";
 import { motionVariants } from "../constant/animation";
 import { formattedDirection, TDirection, TMotionVariants } from "../constant/Animation";
 import { routerSheet } from "../constant/routerSheet";
+import { AppContext } from "../context/context";
+import { Types } from "../context/reducers";
 
 export const MotionWrapper: React.FC<PropsWithChildren<{}>> = (props) => {
   const { children } = props;
-  const [direction, setDirection] = useState<TDirection>("up");
+  const { state, dispatch } = useContext(AppContext);
+
+  const direction = useMemo(() => {
+    return state.motion.direction;
+  }, [state]);
+  const setDirection = useCallback(
+    (direction: TDirection) => {
+      dispatch({
+        type: Types.Set,
+        payload: {
+          direction: direction,
+        },
+      });
+    },
+    [state]
+  );
   const motionDirection = useMemo<keyof TMotionVariants>(
     () =>
       ("motion" +
@@ -26,10 +44,10 @@ export const MotionWrapper: React.FC<PropsWithChildren<{}>> = (props) => {
   );
   const router = useRouter();
   const pathName = router.pathname;
-  const routerChangeHandler = useCallback((url: string) => {
-    const actions: { [k in TDirection]: boolean } = {
+  const animationDirection: (url: string) => { [k in TDirection]: boolean } = (url: string) => {
+    return {
+      left: routerSheet.indexOf(url) > 0 && routerSheet.indexOf(pathName) === 0,
       right: routerSheet.indexOf(url) === 0,
-      left: routerSheet.indexOf(url) > 0,
       up:
         routerSheet.indexOf(url) < 0 ||
         (routerSheet.indexOf(url) === 1 && routerSheet.indexOf(pathName) === 2),
@@ -38,19 +56,26 @@ export const MotionWrapper: React.FC<PropsWithChildren<{}>> = (props) => {
         routerSheet.indexOf(pathName) < routerSheet.indexOf(url) &&
         routerSheet.indexOf(url) !== 0,
     };
-    console.log(actions);
+  };
+  const routerChangeHandler = useCallback((url: string) => {
     setDirection(
-      (Object.keys(actions) as TDirection[]).filter((action) => actions[action] === true)[0]
+      (Object.keys(animationDirection(url)) as TDirection[]).filter(
+        (action) => animationDirection(url)[action] === true
+      )[0]
     );
+    console.log(animationDirection(url));
   }, []);
   useEffect(() => {
     router.events.on("routeChangeStart", routerChangeHandler);
+    return () => {
+      router.events.off("routeChangeStart", routerChangeHandler);
+    };
   }, []);
 
   const variants = useMemo(() => {
+    console.log(direction);
     return motionVariants[motionDirection];
   }, [motionDirection]);
-  console.log(direction);
   return (
     <motion.div initial="initial" animate="enter" exit="exit" variants={variants}>
       {children}
