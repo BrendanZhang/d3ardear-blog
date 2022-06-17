@@ -10,10 +10,11 @@ import {
   HomePageMainContainer,
 } from "../components/styledComponents/homePageComponents";
 import FullPageScroll from "../components/utils/FullPage/FullPage";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useCallback } from "react";
 import { HomePageBlog } from "../components/home/blogHome/homeBlog";
 import { HomePageWork } from "../components/home/workHome/workHomePage";
 import { AnimatePresence, motion } from "framer-motion";
+import { defaultVariants } from "../components/constant/animation";
 
 const Home: NextPage = () => {
   const [pageIndex, setPageIndex] = useState(0);
@@ -27,10 +28,13 @@ const Home: NextPage = () => {
     console.log(index);
     console.log("调用了beforepageScroll");
   };
-  const handlePageChanged = (index: number) => {
-    setPageIndex(index);
-    index === 0 ? setHeaderVisible(true) : setHeaderVisible(false);
-  };
+  const handlePageChanged = useCallback(
+    (index: number) => {
+      setPageIndex(index);
+      index === 0 ? setHeaderVisible(true) : setHeaderVisible(false);
+    },
+    [setPageIndex, setHeaderVisible]
+  );
 
   return (
     <div className={styles.container}>
@@ -41,13 +45,12 @@ const Home: NextPage = () => {
       </Head>
 
       <AnimatePresence exitBeforeEnter>
-        {headerVisible && (
-          <motion.header animate={{ opacity: 1 }} exit={{ opacity: 0 }} initial={{ opacity: 0 }}>
-            <Header mode={"light"} />
-          </motion.header>
-        )}
+        {pageIndex === 0 && <Header mode={"light"} />}
       </AnimatePresence>
-      {pageIndex !== 2 && <ArrowLink color={themeColor} clickTrigger={onClickArrow} />}
+
+      <AnimatePresence exitBeforeEnter>
+        {pageIndex !== 2 && <ArrowLink color={themeColor} clickTrigger={onClickArrow} />}
+      </AnimatePresence>
       <FullPageScroll
         onBeforePageScroll={onBeforePageScroll}
         onPageChanged={handlePageChanged}

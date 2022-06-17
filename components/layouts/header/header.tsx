@@ -5,6 +5,7 @@ import { AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import React, { ReactNode, useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
+import { defaultVariants } from "../../constant/animation";
 import { media } from "../../constant/media";
 import { HeaderContainer, HeaderAction } from "../../styledComponents/header";
 import { ActionButtons } from "./actionButton";
@@ -42,7 +43,7 @@ const Header: React.FC<IHeader> = (props) => {
     color: isLight ? "#eeeeee" : "#555555",
   };
   return (
-    <HeaderContainer>
+    <HeaderContainer initial="initial" exit="exit" animate="animate" variants={defaultVariants}>
       <HeaderAction style={HeaderContainerStyle}>
         <StyledIconContainer>
           <IconWithTitle fill={HeaderContainerStyle.color} height="46px" />

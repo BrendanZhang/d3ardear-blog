@@ -33,7 +33,7 @@ const BlogPage: NextPage = () => {
   return (
     <main>
       <StyledPagecontainer>
-        <BlogHeader />
+        <Header mode="dark" />
         <StyledMain>
           <header>
             <div style={{ display: "flex" }}>

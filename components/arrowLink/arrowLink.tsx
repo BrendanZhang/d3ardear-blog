@@ -5,6 +5,8 @@ import { useMemo } from "react";
 import { useRouter } from "next/router";
 import { DownArrowContainer, UpArrowContainer } from "./styledArrow";
 import styled from "styled-components";
+import { motion } from "framer-motion";
+import { defaultVariants } from "../constant/animation";
 
 type THref = "blog" | "/" | "work";
 interface IArrowLink {
@@ -17,7 +19,12 @@ const ArrowLink: React.FC<IArrowLink> = (props) => {
   const { color, clickTrigger } = props;
 
   return (
-    <ArrowContainer light={color === "light"}>
+    <ArrowContainer
+      initial="initial"
+      exit="exit"
+      animate="animate"
+      variants={defaultVariants}
+      light={color === "light"}>
       <DownArrowContainer>
         <StyledArrow onClick={() => clickTrigger("down")}>
           <KeyboardArrowDownIcon style={{ fontSize: "inherit" }} />
@@ -26,7 +33,7 @@ const ArrowLink: React.FC<IArrowLink> = (props) => {
     </ArrowContainer>
   );
 };
-const ArrowContainer = styled.div<{ light: boolean }>`
+const ArrowContainer = styled(motion.div)<{ light: boolean }>`
   color: ${(props) => (props.light ? "#eeeeee" : "#333333")};
   transition: color 300ms;
 `;
