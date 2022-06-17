@@ -1,4 +1,5 @@
-import React, { ReactElement, useCallback } from "react";
+import { ConsoleSqlOutlined } from "@ant-design/icons";
+import React, { ReactElement, useCallback, useTransition } from "react";
 import { useEffect, useMemo, useRef, useState, WheelEvent } from "react";
 import {
   DEFAULT_ANIMATION_DELAY,
@@ -13,13 +14,14 @@ import {
   KEY_UP,
   MINIMAL_DELTA_Y,
 } from "./constant";
-import { usePrevIndex } from "./FullPageHooks";
+import { usePrevIndex, useThrottle } from "./FullPageHooks";
 import { wrapperStyle } from "./styles";
 import { isEmpty } from "./utils";
 
 const FullPageScroll = (props: IFullPageProps) => {
   // flag 变量
   const previousTouchMove = useRef<number | null>(null),
+    [isPending, startTransition] = useTransition(),
     isScrolling = useRef<boolean>(false),
     isMounted = useRef<boolean>(false),
     isBodyScrollEnabled = useRef<boolean>(true),
@@ -29,6 +31,7 @@ const FullPageScroll = (props: IFullPageProps) => {
   const {
     children,
     onBeforePageScroll,
+    onPageChanged,
     animationDuration,
     transitionFunction,
     renderAllPagesOnMount,
@@ -36,7 +39,6 @@ const FullPageScroll = (props: IFullPageProps) => {
     disableScrollUp,
     animationDelay,
     scrollUnavailableHandler,
-    onPageChange,
     customPageIndex,
     minimalScrollDistance,
   } = props;
@@ -59,8 +61,6 @@ const FullPageScroll = (props: IFullPageProps) => {
   // 滚动函数
   const scrollPage = useCallback(
     (nextPageIndex: number) => {
-      console.log("调用了滚动函数", nextPageIndex);
-
       onBeforePageScroll && onBeforePageScroll(nextPageIndex);
       pageRef.current &&
         (pageRef.current.style.transform = `translate3d(0, ${nextPageIndex * -100}%, 0)`);
@@ -149,13 +149,14 @@ const FullPageScroll = (props: IFullPageProps) => {
         if (!isEmpty(containers.current[pageIndex + directionData[direction].indexMove])) {
           disableScroll();
           isScrolling.current = true;
+          console.log("在滚动");
           scrollPage(pageIndex + directionData[direction].indexMove);
 
           setTimeout(() => {
             if (isMounted) {
               setPageIndex((prevState) => prevState + directionData[direction].indexMove);
             }
-          }, (animationDuration as number) + (animationDelay as number));
+          }, (animationDelay as number) + (animationDuration as number));
         } else {
           enableScroll();
           if (scrollUnavailableHandler) {
@@ -177,14 +178,19 @@ const FullPageScroll = (props: IFullPageProps) => {
     ]
   );
 
-  const wheelScroll = useCallback(
-    (event: WheelEvent) => {
+  const wheelScrollHandler = (event: WheelEvent) => {
+    startTransition(() => {
       const absDeltaY = Math.abs(event.deltaY);
       if (minimalScrollDistance ? absDeltaY > minimalScrollDistance : absDeltaY > MINIMAL_DELTA_Y) {
         event.deltaY > 0 ? scrollWindow("down") : scrollWindow("up");
       }
-    },
-    [scrollWindow]
+    });
+  };
+  const wheelScroll = useThrottle(
+    wheelScrollHandler,
+    (animationDelay as number) + (animationDuration as number),
+    // animationDuration as number,
+    [scrollWindow, animationDuration, animationDelay, wheelScrollHandler]
   );
 
   const touchMove = useCallback(
@@ -241,10 +247,10 @@ const FullPageScroll = (props: IFullPageProps) => {
 
   // 滑动到新页面时调用钩子
   useEffect(() => {
-    if (onPageChange) {
-      onPageChange(pageIndex);
+    if (onPageChanged) {
+      onPageChanged(pageIndex);
     }
-  }, [onPageChange, pageIndex]);
+  }, [onPageChanged, pageIndex]);
 
   useEffect(() => {
     if (

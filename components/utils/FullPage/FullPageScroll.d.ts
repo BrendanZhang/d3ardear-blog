@@ -21,8 +21,8 @@ interface IFullPageProps {
   scrollUnavailableHandler?: () => void;
   // 滑动进入新页面时的回调
   onBeforePageScroll?: (nextPage: number) => void;
-  // 页面改动时的回调
-  onPageChange?: (page: number) => void;
+  // 页面改动后的回调
+  onPageChanged?: (page: number) => void;
   // 一开始渲染全部页面
   renderAllPagesOnMount?: boolean;
   // 自定义时间函数

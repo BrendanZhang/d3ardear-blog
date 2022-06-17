@@ -23,7 +23,7 @@ const Home: NextPage = () => {
 
   const onClickArrow = (direction: "up" | "down") => {
     console.log("clickDown");
-    direction === "down" ? handlePageChange(pageIndex + 1) : handlePageChange(pageIndex - 1);
+    direction === "down" ? handlePageChanged(pageIndex + 1) : handlePageChanged(pageIndex - 1);
   };
   const themeColor = useMemo(() => (pageIndex === 0 ? "light" : "dark"), [pageIndex]);
   const onBeforePageScroll = (index: number) => {
@@ -31,7 +31,8 @@ const Home: NextPage = () => {
     console.log("调用了beforepageScroll");
     index === 0 ? setHeaderVisible(true) : setHeaderVisible(false);
   };
-  const handlePageChange = (index: number) => {
+  const handlePageChanged = (index: number) => {
+    console.log("滚完了", index);
     setPageIndex(index);
   };
 
@@ -53,7 +54,7 @@ const Home: NextPage = () => {
       <ArrowLink order={pageIndex} color={themeColor} clickTrigger={onClickArrow} />
       <FullPageScroll
         onBeforePageScroll={onBeforePageScroll}
-        onPageChange={handlePageChange}
+        onPageChanged={handlePageChanged}
         customPageIndex={pageIndex}
         minimalScrollDistance={3}>
         <HomePageMainContainer key={0} className="section">
