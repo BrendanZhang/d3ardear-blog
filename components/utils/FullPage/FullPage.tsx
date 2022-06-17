@@ -146,14 +146,15 @@ const FullPageScroll = (props: IFullPageProps) => {
         },
       };
       if (!isScrolling.current && !directionData[direction].disableCheck) {
+        console.log("在没在滚动", isScrolling.current);
         if (!isEmpty(containers.current[pageIndex + directionData[direction].indexMove])) {
           disableScroll();
           isScrolling.current = true;
-          console.log("在滚动");
           scrollPage(pageIndex + directionData[direction].indexMove);
 
           setTimeout(() => {
             if (isMounted) {
+              console.log("当前页码：", pageIndex, "payload:", directionData[direction].indexMove);
               setPageIndex((prevState) => prevState + directionData[direction].indexMove);
             }
           }, (animationDelay as number) + (animationDuration as number));
@@ -178,7 +179,7 @@ const FullPageScroll = (props: IFullPageProps) => {
     ]
   );
 
-  const wheelScrollHandler = (event: WheelEvent) => {
+  const wheelScroll = (event: WheelEvent) => {
     startTransition(() => {
       const absDeltaY = Math.abs(event.deltaY);
       if (minimalScrollDistance ? absDeltaY > minimalScrollDistance : absDeltaY > MINIMAL_DELTA_Y) {
@@ -186,12 +187,12 @@ const FullPageScroll = (props: IFullPageProps) => {
       }
     });
   };
-  const wheelScroll = useThrottle(
-    wheelScrollHandler,
-    (animationDelay as number) + (animationDuration as number),
-    // animationDuration as number,
-    [scrollWindow, animationDuration, animationDelay, wheelScrollHandler]
-  );
+  // const wheelScroll = useThrottle(
+  //   wheelScrollHandler,
+  //   (animationDelay as number) + (animationDuration as number),
+  //   // animationDuration as number,
+  //   [scrollWindow, animationDuration, animationDelay, wheelScrollHandler]
+  // );
 
   const touchMove = useCallback(
     (event: TouchEvent) => {

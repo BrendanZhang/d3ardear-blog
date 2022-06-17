@@ -9,14 +9,14 @@ import styled from "styled-components";
 type THref = "blog" | "/" | "portfolio";
 interface IArrowLink {
   color: "light" | "dark";
-  order: number;
+  // order: number;
   clickTrigger: (direction: "up" | "down") => void;
 }
 
 const ArrowLink: React.FC<IArrowLink> = (props) => {
-  const { color, order, clickTrigger } = props;
+  const { color, clickTrigger } = props;
 
-  return order !== 2 ? (
+  return (
     <ArrowContainer light={color === "light"}>
       <DownArrowContainer>
         <StyledArrow onClick={() => clickTrigger("down")}>
@@ -24,8 +24,6 @@ const ArrowLink: React.FC<IArrowLink> = (props) => {
         </StyledArrow>
       </DownArrowContainer>
     </ArrowContainer>
-  ) : (
-    <></>
   );
 };
 const ArrowContainer = styled.div<{ light: boolean }>`

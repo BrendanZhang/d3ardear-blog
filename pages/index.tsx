@@ -29,11 +29,10 @@ const Home: NextPage = () => {
   const onBeforePageScroll = (index: number) => {
     console.log(index);
     console.log("调用了beforepageScroll");
-    index === 0 ? setHeaderVisible(true) : setHeaderVisible(false);
   };
   const handlePageChanged = (index: number) => {
-    console.log("滚完了", index);
     setPageIndex(index);
+    index === 0 ? setHeaderVisible(true) : setHeaderVisible(false);
   };
 
   return (
@@ -51,12 +50,13 @@ const Home: NextPage = () => {
           </motion.header>
         )}
       </AnimatePresence>
-      <ArrowLink order={pageIndex} color={themeColor} clickTrigger={onClickArrow} />
+      {pageIndex !== 2 && <ArrowLink color={themeColor} clickTrigger={onClickArrow} />}
       <FullPageScroll
         onBeforePageScroll={onBeforePageScroll}
         onPageChanged={handlePageChanged}
         customPageIndex={pageIndex}
-        minimalScrollDistance={3}>
+        minimalScrollDistance={3}
+        animationDuration={600}>
         <HomePageMainContainer key={0} className="section">
           <HomePageBackgroundImg />
         </HomePageMainContainer>
