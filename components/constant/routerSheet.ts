@@ -1,1 +1,1 @@
-export const routerSheet = ["/", "/blog", "/portfolio"];
+export const routerSheet = ["/", "/blog", "/work"];

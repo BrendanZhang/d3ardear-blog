@@ -28,10 +28,15 @@ export const DesktopDrawer: React.FC<PropsWithChildren<{}>> = (props) => {
     <DesktopAction animate="animate" exit="exit" initial="initial" variants={defaultVariants}>
       <StyledIcon color="#eeeeee" height="46px" />
       <DesktopDrawerAction variants={actionVariants}>{children}</DesktopDrawerAction>
+      <PlaceHolder />
     </DesktopAction>
   );
 };
 
+const PlaceHolder = styled.div`
+  width: 50.5px;
+  height: 46px;
+`;
 const DesktopDrawerAction = styled(DrawerAction)`
   flex-direction: row;
 `;

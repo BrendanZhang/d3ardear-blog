@@ -33,11 +33,11 @@ export const ActionButtons: React.FC<{ device: "mobile" | "desktop"; active: boo
           <DesktopButton>BLOG</DesktopButton>
         )}
       </Link>
-      <Link href="/portfolio">
+      <Link href="/work">
         {device === "mobile" ? (
-          <MobileButton aria-label="portfolio">PROJECT</MobileButton>
+          <MobileButton aria-label="work">WORK</MobileButton>
         ) : (
-          <DesktopButton>PROJECT</DesktopButton>
+          <DesktopButton>WORK</DesktopButton>
         )}
       </Link>
     </>

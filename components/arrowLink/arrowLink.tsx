@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { DownArrowContainer, UpArrowContainer } from "./styledArrow";
 import styled from "styled-components";
 
-type THref = "blog" | "/" | "portfolio";
+type THref = "blog" | "/" | "work";
 interface IArrowLink {
   color: "light" | "dark";
   // order: number;
@@ -44,7 +44,7 @@ export default ArrowLink;
 // import { useRouter } from "next/router";
 // import { DownArrowContainer, UpArrowContainer } from "./styledArrow";
 
-// type THref = "blog" | "/" | "portfolio";
+// type THref = "blog" | "/" | "work";
 // interface IArrowLink {
 //   color: "light" | "dark";
 //   order: number;
@@ -92,7 +92,7 @@ export default ArrowLink;
 //       <ArrowIcon href="blog" down />,
 //       <>
 //         <ArrowIcon href="/" down={false} />
-//         <ArrowIcon href="portfolio" down />
+//         <ArrowIcon href="work" down />
 //       </>,
 //       <ArrowIcon href="blog" down={false} />,
 //     ];

@@ -24,9 +24,7 @@ const Header: React.FC<IHeader> = (props) => {
   const [menuActive, setMenuAction] = useState(false);
   const isLight = useMemo(() => mode === "light", [mode]);
   const onClickMenu = () => {
-    console.log("调用了");
     setMenuAction((prevMenuAction) => !prevMenuAction);
-    console.log(menuActive);
   };
   const IconStyle = useMemo(() => {
     return {

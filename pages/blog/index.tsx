@@ -31,7 +31,7 @@ const StyledPagecontainer = styled.main`
 
 const BlogPage: NextPage = () => {
   return (
-    <MotionWrapper>
+    <main>
       <StyledPagecontainer>
         <BlogHeader />
         <StyledMain>
@@ -51,7 +51,7 @@ const BlogPage: NextPage = () => {
         </StyledMain>
         <Footer />
       </StyledPagecontainer>
-    </MotionWrapper>
+    </main>
   );
 };
 

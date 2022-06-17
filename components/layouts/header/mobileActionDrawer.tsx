@@ -39,6 +39,12 @@ export const MobileDrawer: React.FC<PropsWithChildren<TMobileActionProps>> = (pr
       opacity: 0,
     },
   };
+  const onclickGithub = () => {
+    window.open("https://github.com/D3arDear");
+  };
+  const onclickMail = () => {
+    window.open("mailto:brenz@d3ardear.fun");
+  };
   return (
     <MobileActionContainer
       animate="animate"
@@ -52,10 +58,10 @@ export const MobileDrawer: React.FC<PropsWithChildren<TMobileActionProps>> = (pr
           <h2>LINKS</h2>
         </header>
         <main>
-          <StyledIconButton>
+          <StyledIconButton onClick={onclickGithub}>
             <GithubFilled />
           </StyledIconButton>
-          <StyledIconButton style={{ marginLeft: "1em" }}>
+          <StyledIconButton style={{ marginLeft: "1em" }} onClick={onclickMail}>
             <MailFilled />
           </StyledIconButton>
         </main>

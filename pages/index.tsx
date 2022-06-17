@@ -11,18 +11,15 @@ import {
 } from "../components/styledComponents/homePageComponents";
 import FullPageScroll from "../components/utils/FullPage/FullPage";
 import { useMemo, useState } from "react";
-import { HomePageBlog } from "../components/home/homeBlog/homeBlog";
-import { HomePageProject } from "../components/home/homePortfolio/homePortfolio";
-import { MotionWrapper } from "../components/common/motionWrapper";
+import { HomePageBlog } from "../components/home/blogHome/homeBlog";
+import { HomePageWork } from "../components/home/workHome/workHomePage";
 import { AnimatePresence, motion } from "framer-motion";
-import { motionVariants } from "../components/constant/animation";
 
 const Home: NextPage = () => {
   const [pageIndex, setPageIndex] = useState(0);
   const [headerVisible, setHeaderVisible] = useState(true);
 
   const onClickArrow = (direction: "up" | "down") => {
-    console.log("clickDown");
     direction === "down" ? handlePageChanged(pageIndex + 1) : handlePageChanged(pageIndex - 1);
   };
   const themeColor = useMemo(() => (pageIndex === 0 ? "light" : "dark"), [pageIndex]);
@@ -64,7 +61,7 @@ const Home: NextPage = () => {
           <HomePageBlog />
         </FullPageMain>
         <FullPageMain key={2} className="section">
-          <HomePageProject />
+          <HomePageWork />
         </FullPageMain>
       </FullPageScroll>
       <Footer />

@@ -63,7 +63,6 @@ export const MotionWrapper: React.FC<PropsWithChildren<{}>> = (props) => {
         (action) => animationDirection(url)[action] === true
       )[0]
     );
-    console.log(animationDirection(url));
   }, []);
   useEffect(() => {
     router.events.on("routeChangeStart", routerChangeHandler);
@@ -73,7 +72,6 @@ export const MotionWrapper: React.FC<PropsWithChildren<{}>> = (props) => {
   }, []);
 
   const variants = useMemo(() => {
-    console.log(direction);
     return motionVariants[motionDirection];
   }, [motionDirection]);
   return (
