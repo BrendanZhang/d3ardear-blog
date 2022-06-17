@@ -4,6 +4,7 @@ import { IconButton } from "@mui/material";
 import { useMemo } from "react";
 import { useRouter } from "next/router";
 import { DownArrowContainer, UpArrowContainer } from "./styledArrow";
+import styled from "styled-components";
 
 type THref = "blog" | "/" | "portfolio";
 interface IArrowLink {
@@ -14,42 +15,27 @@ interface IArrowLink {
 
 const ArrowLink: React.FC<IArrowLink> = (props) => {
   const { color, order, clickTrigger } = props;
-  const path = useRouter().pathname;
 
-  const ArrowIcon: React.FC<{ href: string; down: boolean }> = (props) => {
-    const { href, down } = props;
-    const buttonLabel = useMemo(() => `to${href}`, [href]);
-    const colorStyle = {
-      color: color === "light" ? "#eeeeee" : "#333333",
-      transition: "color 300ms",
-    };
-    return (
-      <div style={colorStyle}>
-        {down ? (
-          <DownArrowContainer>
-            <IconButton
-              aria-label={buttonLabel}
-              style={{ color: "inherit" }}
-              onClick={() => clickTrigger("down")}>
-              <KeyboardArrowDownIcon style={{ fontSize: "40px", color: "inherit" }} />
-            </IconButton>
-          </DownArrowContainer>
-        ) : (
-          <UpArrowContainer>
-            <IconButton
-              aria-label={buttonLabel}
-              style={{ color: "inherit" }}
-              onClick={() => clickTrigger("up")}>
-              <KeyboardArrowUpIcon style={{ fontSize: "40px", color: "inheirt" }} />
-            </IconButton>
-          </UpArrowContainer>
-        )}
-      </div>
-    );
-  };
-
-  return order === 2 ? <></> : <ArrowIcon href="blog" down />;
+  return order !== 2 ? (
+    <ArrowContainer light={color === "light"}>
+      <DownArrowContainer>
+        <StyledArrow onClick={() => clickTrigger("down")}>
+          <KeyboardArrowDownIcon style={{ fontSize: "inherit" }} />
+        </StyledArrow>
+      </DownArrowContainer>
+    </ArrowContainer>
+  ) : (
+    <></>
+  );
 };
+const ArrowContainer = styled.div<{ light: boolean }>`
+  color: ${(props) => (props.light ? "#eeeeee" : "#333333")};
+  transition: color 300ms;
+`;
+const StyledArrow = styled(IconButton)`
+  color: inherit;
+  font-size: 50px;
+`;
 
 export default ArrowLink;
 

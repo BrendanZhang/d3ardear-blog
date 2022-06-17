@@ -59,6 +59,8 @@ const FullPageScroll = (props: IFullPageProps) => {
   // 滚动函数
   const scrollPage = useCallback(
     (nextPageIndex: number) => {
+      console.log("调用了滚动函数", nextPageIndex);
+
       onBeforePageScroll && onBeforePageScroll(nextPageIndex);
       pageRef.current &&
         (pageRef.current.style.transform = `translate3d(0, ${nextPageIndex * -100}%, 0)`);

@@ -8,10 +8,11 @@ import styled from "styled-components";
 import { media } from "../../constant/media";
 import { HeaderContainer, HeaderAction } from "../../styledComponents/header";
 import { ActionButtons } from "./actionButton";
+import { DesktopDrawer } from "./desktopActionDrawer";
 import Icon from "./icon";
 import IconWithTitle from "./iconWithTitle";
 import { MenuIcon } from "./menuIcon";
-import { MobileAction } from "./mobileActionDrawer";
+import { MobileDrawer } from "./mobileActionDrawer";
 
 interface IHeader {
   mode: "light" | "dark";
@@ -27,15 +28,17 @@ const Header: React.FC<IHeader> = (props) => {
     setMenuAction((prevMenuAction) => !prevMenuAction);
     console.log(menuActive);
   };
-  const IconStyle = {
-    fontSize: "20px",
-    color: "inherit",
-    zIndex: "10",
-    transition: "all 300ms",
-    filter: menuActive
-      ? "drop-shadow(rgb(240, 73, 44) 0px 0px 2px)"
-      : "drop-shadow(rgb(240, 73, 44) 0px 0px 0px)",
-  };
+  const IconStyle = useMemo(() => {
+    return {
+      fontSize: "20px",
+      color: "inherit",
+      zIndex: menuActive ? "10" : "5",
+      transition: "all 300ms",
+      filter: menuActive
+        ? "drop-shadow(rgb(240, 73, 44) 0px 0px 2px)"
+        : "drop-shadow(rgb(240, 73, 44) 0px 0px 0px)",
+    };
+  }, [menuActive]);
   const HeaderContainerStyle = {
     transition: "color 300ms",
     color: isLight ? "#eeeeee" : "#555555",
@@ -44,20 +47,20 @@ const Header: React.FC<IHeader> = (props) => {
     <HeaderContainer>
       <HeaderAction style={HeaderContainerStyle}>
         <StyledIconContainer>
-          {/* <Icon fill={HeaderContainerStyle.color} height="46px" /> */}
           <IconWithTitle fill={HeaderContainerStyle.color} height="46px" />
         </StyledIconContainer>
-        {menuActive && (
-          <DesktopAction>
-            <ActionButtons device="desktop" active={true} />
-          </DesktopAction>
-        )}
-
         <AnimatePresence exitBeforeEnter>
           {menuActive && (
-            <MobileAction active={true}>
+            <DesktopDrawer>
+              <ActionButtons device="desktop" active={true} />
+            </DesktopDrawer>
+          )}
+        </AnimatePresence>
+        <AnimatePresence exitBeforeEnter>
+          {menuActive && (
+            <MobileDrawer>
               <ActionButtons device="mobile" active={true} />
-            </MobileAction>
+            </MobileDrawer>
           )}
         </AnimatePresence>
         <div>
@@ -74,15 +77,6 @@ const Header: React.FC<IHeader> = (props) => {
     </HeaderContainer>
   );
 };
-
-const DesktopAction = styled.div`
-  display: none;
-
-  ${media("tablet")} {
-    display: inline-flex;
-    color: inherit;
-  }
-`;
 
 const StyledIconContainer = styled.div`
   display: inline-flex;

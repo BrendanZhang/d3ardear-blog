@@ -14,7 +14,7 @@ import { useMemo, useState } from "react";
 import { HomePageBlog } from "../components/home/homeBlog/homeBlog";
 import { HomePageProject } from "../components/home/homePortfolio/homePortfolio";
 import { MotionWrapper } from "../components/common/motionWrapper";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { motionVariants } from "../components/constant/animation";
 
 const Home: NextPage = () => {
@@ -28,6 +28,7 @@ const Home: NextPage = () => {
   const themeColor = useMemo(() => (pageIndex === 0 ? "light" : "dark"), [pageIndex]);
   const onBeforePageScroll = (index: number) => {
     console.log(index);
+    console.log("调用了beforepageScroll");
     index === 0 ? setHeaderVisible(true) : setHeaderVisible(false);
   };
   const handlePageChange = (index: number) => {
@@ -41,7 +42,14 @@ const Home: NextPage = () => {
         <meta name="description" content=";" />
         <link rel="icon" href="/icon.png" />
       </Head>
-      {pageIndex === 0 && <Header mode={themeColor} />}
+
+      <AnimatePresence exitBeforeEnter>
+        {headerVisible && (
+          <motion.header animate={{ opacity: 1 }} exit={{ opacity: 0 }} initial={{ opacity: 0 }}>
+            <Header mode={"light"} />
+          </motion.header>
+        )}
+      </AnimatePresence>
       <ArrowLink order={pageIndex} color={themeColor} clickTrigger={onClickArrow} />
       <FullPageScroll
         onBeforePageScroll={onBeforePageScroll}
