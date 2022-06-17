@@ -38,12 +38,6 @@ const Home: NextPage = () => {
 
   return (
     <div className={styles.container}>
-      <Head>
-        <title>D3arDear</title>
-        <meta name="description" content=";" />
-        <link rel="icon" href="/icon.png" />
-      </Head>
-
       <AnimatePresence exitBeforeEnter>
         {pageIndex === 0 && <Header mode={"light"} />}
       </AnimatePresence>
