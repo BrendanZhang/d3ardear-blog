@@ -66,3 +66,14 @@ const motionUp = {
 };
 
 export const motionVariants: TMotionVariants = { motionRight, motionLeft, motionUp, motionDown };
+export const defaultVariants = {
+  animate: {
+    opacity: 1,
+  },
+  initial: {
+    opacity: 0,
+  },
+  exit: {
+    opacity: 0,
+  },
+};
