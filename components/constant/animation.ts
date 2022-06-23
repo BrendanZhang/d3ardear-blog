@@ -77,3 +77,9 @@ export const defaultVariants = {
     opacity: 0,
   },
 };
+
+export const defaultMotionProps = {
+  animate: "animate",
+  exit: "exit",
+  initial: "initial",
+};

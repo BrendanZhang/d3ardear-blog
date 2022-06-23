@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { PropsWithChildren } from "react";
 import styled from "styled-components";
-import { defaultVariants } from "../../constant/animation";
+import { defaultMotionProps, defaultVariants } from "../../constant/animation";
 import { media } from "../../constant/media";
 import { DrawerAction, StyledIcon } from "./mobileActionDrawer";
 
@@ -25,7 +25,7 @@ export const DesktopDrawer: React.FC<PropsWithChildren<{}>> = (props) => {
     },
   };
   return (
-    <DesktopAction animate="animate" exit="exit" initial="initial" variants={defaultVariants}>
+    <DesktopAction {...defaultMotionProps} variants={defaultVariants}>
       <StyledIcon color="#eeeeee" height="46px" />
       <DesktopDrawerAction variants={actionVariants}>{children}</DesktopDrawerAction>
       <PlaceHolder />

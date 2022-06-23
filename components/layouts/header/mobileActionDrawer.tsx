@@ -4,7 +4,7 @@ import { IconButton } from "@mui/material";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import React, { PropsWithChildren, ReactChild, ReactElement, ReactNode } from "react";
 import styled from "styled-components";
-import { defaultVariants } from "../../constant/animation";
+import { defaultMotionProps, defaultVariants } from "../../constant/animation";
 import { media } from "../../constant/media";
 import Icon from "./icon";
 
@@ -46,11 +46,7 @@ export const MobileDrawer: React.FC<PropsWithChildren<TMobileActionProps>> = (pr
     window.open("mailto:brenz@d3ardear.fun");
   };
   return (
-    <MobileActionContainer
-      animate="animate"
-      exit="exit"
-      initial="initial"
-      variants={defaultVariants}>
+    <MobileActionContainer {...defaultMotionProps} variants={defaultVariants}>
       <StyledIcon color="#eeeeee" height="46px" />
       <DrawerAction variants={actionVariants}>{children}</DrawerAction>
       <StyledFooter variants={linkVariants}>

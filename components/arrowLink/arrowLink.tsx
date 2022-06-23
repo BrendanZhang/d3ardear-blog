@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { DownArrowContainer, UpArrowContainer } from "./styledArrow";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { defaultVariants } from "../constant/animation";
+import { defaultMotionProps, defaultVariants } from "../constant/animation";
 
 type THref = "blog" | "/" | "work";
 interface IArrowLink {
@@ -19,12 +19,7 @@ const ArrowLink: React.FC<IArrowLink> = (props) => {
   const { color, clickTrigger } = props;
 
   return (
-    <ArrowContainer
-      initial="initial"
-      exit="exit"
-      animate="animate"
-      variants={defaultVariants}
-      light={color === "light"}>
+    <ArrowContainer {...defaultMotionProps} variants={defaultVariants} light={color === "light"}>
       <DownArrowContainer>
         <StyledArrow onClick={() => clickTrigger("down")}>
           <KeyboardArrowDownIcon style={{ fontSize: "inherit" }} />
