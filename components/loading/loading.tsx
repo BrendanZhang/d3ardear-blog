@@ -26,12 +26,8 @@ export const Loading: React.FC<PropsWithChildren<{}>> = () => {
   };
   return (
     <LoadingContainer {...defaultMotionProps} variants={containerVariant} className="loading">
-      <div>
-        这里是画板
-        <div>
-          <LoadingIcon />
-        </div>
-      </div>
+      这里是画板
+      <LoadingIcon />
     </LoadingContainer>
   );
 };
@@ -40,10 +36,8 @@ const LoadingContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   color: inherit;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding-left: 20px;
-  padding-top: 20px;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   height: 100vh;
   width: 100%;

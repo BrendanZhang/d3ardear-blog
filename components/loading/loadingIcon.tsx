@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import styled from "styled-components";
 
 const draw = {
   hidden: { pathLength: 0, opacity: 0, stroke: "rgba(212, 212, 212, 1)" },
@@ -19,19 +20,33 @@ const draw = {
 const svgVariant = {
   hidden: {
     color: "rgba(212, 212, 212,0)",
+    filter: "drop-shadow(rgb(240, 73, 44) 0px 0px 0px)",
   },
   visible: {
     color: "rgba(212, 212, 212,1)",
+    filter: [
+      "drop-shadow(rgb(240, 73, 44) 0px 0px 0px)",
+      "drop-shadow(rgb(240, 73, 44) 0px 0px 4px)",
+    ],
     transition: {
-      delay: 3,
+      color: { delay: 3 },
+      filter: {
+        delay: 3.5,
+        duration: 1,
+        times: [0, 1, 2],
+        repeat: Infinity,
+        easeInOut: [0.17, 0.67, 0.83, 0.67],
+        repeatType: "reverse",
+      },
     },
   },
 };
 
 export const LoadingIcon = () => {
   return (
-    <motion.svg
-      width="30vw"
+    <StyledSvg
+      height="50%"
+      width="50%"
       viewBox="0 0 128 128"
       initial="hidden"
       animate="visible"
@@ -75,6 +90,10 @@ export const LoadingIcon = () => {
         custom={2}
         fill="currentColor"
       />
-    </motion.svg>
+    </StyledSvg>
   );
 };
+
+const StyledSvg = styled(motion.svg)`
+  /* filter: drop-shadow(rgb(240, 73, 44) 0px 0px 4px); */
+`;

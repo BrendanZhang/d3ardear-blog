@@ -6,6 +6,7 @@ import { MotionWrapper } from "../components/common/motionWrapper";
 import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
 import { Loading } from "../components/loading/loading";
+import { Noise } from "../components/noise/noise";
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   const [loadingVisible, setLoadingVisible] = useState(false);
@@ -28,6 +29,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
 
   return (
     <AppProvider>
+      <Noise />
       <AnimatePresence exitBeforeEnter>{loadingVisible && <Loading />}</AnimatePresence>
       <Head key="head">
         <title>D3arDear</title>
