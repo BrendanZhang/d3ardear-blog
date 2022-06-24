@@ -137,7 +137,7 @@ const MobileActionContainer = styled(motion.div)`
   background: rgba(20, 43, 51, 0.8);
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
-  ${media("tablet")} {
+  /* ${media("tablet")} {
     display: none;
-  }
+  } */
 `;

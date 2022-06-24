@@ -4,7 +4,7 @@ import styled from "styled-components";
 const draw = {
   hidden: { pathLength: 0, opacity: 0, stroke: "rgba(212, 212, 212, 1)" },
   visible: (i: number) => {
-    const delay = 1 + i * 0.5;
+    const delay = i * 0.25;
     return {
       pathLength: 1,
       opacity: 1,
@@ -12,7 +12,7 @@ const draw = {
       transition: {
         pathLength: { delay, type: "spring", duration: 1.5, bounce: 0 },
         opacity: { delay, duration: 0.1 },
-        stroke: { delay: 3, duration: 0.1 },
+        stroke: { delay: 1.5, duration: 0.1 },
       },
     };
   },
@@ -29,9 +29,9 @@ const svgVariant = {
       "drop-shadow(rgb(240, 73, 44) 0px 0px 4px)",
     ],
     transition: {
-      color: { delay: 3 },
+      color: { delay: 1.5 },
       filter: {
-        delay: 3.5,
+        delay: 2,
         duration: 1,
         times: [0, 1, 2],
         repeat: Infinity,

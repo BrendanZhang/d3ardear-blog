@@ -9,20 +9,27 @@ import { LoadingRing } from "./loadingRing";
 export const Loading: React.FC<PropsWithChildren<{}>> = () => {
   const containerVariant = {
     initial: {
-      opacity: 0,
-      background: "rgba(20, 43, 51, 0.3)",
+      transform: "translateY(100%)",
     },
     animate: {
-      opacity: 1,
-      background: "rgba(20, 43, 51, 0.8)",
+      transform: "translateY(0%)",
       transition: {
-        background: { delay: 0.3, duration: 0.5 },
-        duration: 0.5,
+        // background: { delay: 0.3, duration: 1.5 },
+        duration: 0.75,
+        // ease: [0.04, 0.58, 0.445, 1.0],
+        ease: "easeIn",
+        bounce: 0,
       },
     },
     exit: {
-      opacity: 0,
-      background: "rgba(20, 43, 51, 0.3)",
+      transform: "translateY(-100%)",
+      transition: {
+        // background: { delay: 0.3, duration: 1.5 },
+        duration: 0.75,
+        // ease: [0.04, 0.58, 0.445, 1.0],
+        ease: "easeIn",
+        bounce: 0,
+      },
     },
   };
   return (
@@ -48,6 +55,7 @@ const LoadingContainer = styled(motion.div)`
   right: 0;
   color: #eeeeee;
   z-index: 20;
+  background: rgba(20, 43, 51, 0.9);
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
 `;

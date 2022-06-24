@@ -9,7 +9,7 @@ const ringVariant = {
   visible: {
     opacity: 1,
     transition: {
-      opacity: { delay: 3 },
+      opacity: { delay: 2 },
     },
   },
 };
@@ -60,5 +60,5 @@ const rotate = keyframes`
 const RingContainer = styled(motion.svg)`
   color: rgba(212, 212, 212, 1);
   transform-origin: center center;
-  animation: ${rotate} 4s linear 3.5s infinite, ${scale} 0.5s ease 3s 1;
+  animation: ${rotate} 4s linear 2.5s infinite, ${scale} 0.5s ease 2s 1;
 `;

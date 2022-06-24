@@ -49,10 +49,17 @@ const Header: React.FC<IHeader> = (props) => {
           <IconWithTitle fill={HeaderContainerStyle.color} height="46px" />
         </StyledIconContainer>
         <AnimatePresence exitBeforeEnter>
-          {menuActive && (
+          {/* {menuActive && (
             <DesktopDrawer>
               <ActionButtons device="desktop" active={true} />
             </DesktopDrawer>
+          )} */}
+          {menuActive && (
+            <div style={{ position: "absolute", top: "0", left: "0", right: "0", bottom: "0" }}>
+              <MobileDrawer>
+                <ActionButtons device="mobile" active={true} />
+              </MobileDrawer>
+            </div>
           )}
         </AnimatePresence>
         <AnimatePresence exitBeforeEnter>

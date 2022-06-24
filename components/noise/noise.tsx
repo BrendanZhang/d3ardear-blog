@@ -13,7 +13,7 @@ const StyledNoise = styled.div`
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  opacity: 0.03;
+  opacity: 0.035;
   z-index: 99;
 `;
 

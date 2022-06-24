@@ -9,15 +9,18 @@ import { Loading } from "../components/loading/loading";
 import { Noise } from "../components/noise/noise";
 
 function MyApp({ Component, pageProps, router }: AppProps) {
-  const [loadingVisible, setLoadingVisible] = useState(true);
+  const [loadingVisible, setLoadingVisible] = useState(false);
   const routerChangeStartHandler = useCallback(() => {
+    console.log("路由改变");
     setLoadingVisible(true);
   }, []);
   const routerChangeEnd = useCallback(() => {
-    setLoadingVisible(false);
+    setTimeout(() => {
+      console.log("退出");
+      setLoadingVisible(false);
+    }, 5000);
   }, []);
   useEffect(() => {
-    setLoadingVisible(false);
     router.events.on("routeChangeStart", routerChangeStartHandler);
     router.events.on("routeChangeComplete", routerChangeEnd);
     return () => {
@@ -34,12 +37,23 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         <link rel="icon" href="/icon.png" />
       </Head>
       <Noise />
+      <div
+        style={{
+          overflow: "hidden",
+          position: "absolute",
+          top: 0,
+          right: 0,
+          left: 0,
+          bottom: 0,
+        }}>
+        <div style={{ overflow: "hidden", height: "100%", width: "100%", position: "relative" }}>
+          <AnimatePresence exitBeforeEnter>
+            {loadingVisible && <Loading key="loading" />}
+          </AnimatePresence>
+        </div>
+      </div>
       <AnimatePresence exitBeforeEnter>
-        {loadingVisible ? (
-          <Loading key="loading" />
-        ) : (
-          <Component {...pageProps} key={router.pathname} />
-        )}
+        <Component {...pageProps} key={router.pathname} />
       </AnimatePresence>
     </AppProvider>
   );
