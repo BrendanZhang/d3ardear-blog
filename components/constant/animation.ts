@@ -11,7 +11,7 @@ const motionLeft = {
     x: `-${width}vw`,
     transition: { duration: duration, ease: [0.48, 0.15, 0.25, 0.96] },
   },
-  enter: {
+  animate: {
     opacity: 1,
     scale: 1,
     x: 0,
@@ -35,37 +35,49 @@ const motionRight = {
     x: `${width}vw`,
   },
 };
-const motionDown = {
+const motionUp = {
   ...motionRight,
   initial: {
     ...motionRight.initial,
     x: 0,
     y: `${height}vh`,
   },
-  enter: {
-    ...motionRight.enter,
+  animate: {
+    ...motionRight.animate,
     x: 0,
     y: 0,
+    transition: {
+      delay: 1,
+      duration: 0.75,
+    },
   },
   exit: {
     ...motionRight.initial,
     x: 0,
-    y: `${height}vh`,
+    y: `-${height}vh`,
+    transition: {
+      duration: 1,
+    },
   },
 };
-const motionUp = {
-  ...motionDown,
+const motionDown = {
+  ...motionUp,
   initial: {
-    ...motionDown.initial,
+    ...motionUp.initial,
     y: `-${height}vh`,
   },
   exit: {
-    ...motionDown.initial,
+    ...motionUp.initial,
     y: `-${height}vh`,
   },
 };
 
-export const motionVariants: TMotionVariants = { motionRight, motionLeft, motionUp, motionDown };
+export const motionVariants: TMotionVariants = {
+  motionRight,
+  motionLeft,
+  motionUp,
+  motionDown,
+};
 export const defaultVariants = {
   animate: {
     opacity: 1,

@@ -14,18 +14,44 @@ export const MobileDrawer: React.FC<PropsWithChildren<TMobileActionProps>> = (pr
   const { children } = props;
   const drawerVariants = {
     initial: {
-      originX: "right",
-      originY: "top",
-      transform: "rotate(-90deg) translateZ(0)",
+      transform: "rotate(-70deg) translateZ(0px,100%)",
     },
     animate: {
-      transform: "rotate(0deg) translateZ(0)",
+      transform: "rotate(-110deg) translate(0px,0%)",
       transition: {
         duration: 1,
       },
     },
     exit: {
-      transform: "rotate(-90deg) translateZ(0)",
+      transform: "rotate(-70deg) translateZ(0,100%)",
+    },
+  };
+  const drawerContainerVariants = {
+    initial: {
+      transform: "rotate(70deg) translateZ(0)",
+    },
+    animate: {
+      transform: "rotate(110deg) translateZ(0)",
+      transition: {
+        duration: 1,
+      },
+    },
+    exit: {
+      transform: "rotate(70deg) translateZ(0)",
+    },
+  };
+  const drawerCoverVariants = {
+    initial: {
+      transform: "translate(0px,-100%)",
+    },
+    animate: {
+      transform: "translate(0px,0%)",
+      transition: {
+        duration: 1,
+      },
+    },
+    exit: {
+      transform: "translate(0px,-100%)",
     },
   };
   const linkVariants = {
@@ -62,25 +88,30 @@ export const MobileDrawer: React.FC<PropsWithChildren<TMobileActionProps>> = (pr
     window.open("mailto:brenz@d3ardear.fun");
   };
   return (
-    <div style={{ position: "relative", height: "100vh", width: "100vw", overflow: "hidden" }}>
-      <MobileActionContainer {...defaultMotionProps} variants={drawerVariants}>
-        <StyledIcon color="#eeeeee" height="46px" />
-        <DrawerAction variants={actionVariants}>{children}</DrawerAction>
-        <StyledFooter variants={linkVariants}>
-          <header>
-            <h2>LINKS</h2>
-          </header>
-          <main>
-            <StyledIconButton onClick={onclickGithub}>
-              <GithubFilled />
-            </StyledIconButton>
-            <StyledIconButton style={{ marginLeft: "1em" }} onClick={onclickMail}>
-              <MailFilled />
-            </StyledIconButton>
-          </main>
-        </StyledFooter>
-      </MobileActionContainer>
-    </div>
+    <DrawerContainer
+      // style={{ position: "relative", height: "100vh", width: "100vw", overflow: "hidden" }}>
+      {...defaultMotionProps}
+      variants={drawerContainerVariants}>
+      <DrawerCover {...defaultMotionProps} variants={drawerCoverVariants}>
+        <MobileActionContainer {...defaultMotionProps} variants={drawerVariants}>
+          <StyledIcon color="#eeeeee" height="46px" />
+          <DrawerAction variants={actionVariants}>{children}</DrawerAction>
+          <StyledFooter variants={linkVariants}>
+            <header>
+              <h2>LINKS</h2>
+            </header>
+            <main>
+              <StyledIconButton onClick={onclickGithub}>
+                <GithubFilled />
+              </StyledIconButton>
+              <StyledIconButton style={{ marginLeft: "1em" }} onClick={onclickMail}>
+                <MailFilled />
+              </StyledIconButton>
+            </main>
+          </StyledFooter>
+        </MobileActionContainer>
+      </DrawerCover>
+    </DrawerContainer>
   );
 };
 
@@ -117,26 +148,40 @@ export const DrawerAction = styled(motion.main)`
   justify-content: center;
   color: #eac486;
 `;
+const DrawerContainer = styled(motion.div)`
+  position: fixed;
+  pointer-events: none;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const DrawerCover = styled(motion.div)`
+  overflow: hidden;
+  height: calc(35vh + 94vw);
+  width: calc(34vw + 94vh);
+  flex-shrink: 0;
+  position: relative;
+  background: rgba(20, 43, 51, 0.8);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+`;
 const MobileActionContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   color: inherit;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   padding-left: 20px;
   padding-top: 20px;
-  position: absolute;
-  height: 100vh;
+  height: 100%;
   width: 100%;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
   color: #eeeeee;
-  z-index: 5;
-  background: rgba(20, 43, 51, 0.8);
+  z-index: 20;
+  /* background: rgba(20, 43, 51, 0.8);
   -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px); */
   /* ${media("tablet")} {
     display: none;
   } */

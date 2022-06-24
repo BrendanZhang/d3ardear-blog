@@ -6,12 +6,12 @@ import Header from "../../components/layouts/header/header";
 
 const WorkPage: NextPage = () => {
   return (
-    <main>
+    <MotionWrapper>
       <Header mode="dark" />
       <main></main>
       {/* <ArrowLink color="#333" /> */}
       <Footer />
-    </main>
+    </MotionWrapper>
   );
 };
 

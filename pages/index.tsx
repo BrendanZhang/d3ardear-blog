@@ -14,6 +14,8 @@ import { useMemo, useState, useCallback } from "react";
 import { HomePageBlog } from "../components/home/blogHome/homeBlog";
 import { HomePageWork } from "../components/home/workHome/workHomePage";
 import { AnimatePresence, motion } from "framer-motion";
+import { MotionWrapper } from "../components/common/motionWrapper";
+import { defaultVariants } from "../components/constant/animation";
 
 const Home: NextPage = () => {
   const [pageIndex, setPageIndex] = useState(0);
@@ -25,7 +27,6 @@ const Home: NextPage = () => {
   const themeColor = useMemo(() => (pageIndex === 0 ? "light" : "dark"), [pageIndex]);
   const onBeforePageScroll = (index: number) => {
     console.log(index);
-    console.log("调用了beforepageScroll");
   };
   const handlePageChanged = useCallback(
     (index: number) => {
@@ -36,7 +37,7 @@ const Home: NextPage = () => {
   );
 
   return (
-    <div className={styles.container}>
+    <MotionWrapper className={styles.container}>
       <AnimatePresence exitBeforeEnter>
         {pageIndex === 0 && <Header mode={"light"} />}
       </AnimatePresence>
@@ -61,7 +62,7 @@ const Home: NextPage = () => {
         </FullPageMain>
       </FullPageScroll>
       <Footer />
-    </div>
+    </MotionWrapper>
   );
 };
 

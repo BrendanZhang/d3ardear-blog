@@ -16,9 +16,8 @@ function MyApp({ Component, pageProps, router }: AppProps) {
   }, []);
   const routerChangeEnd = useCallback(() => {
     setTimeout(() => {
-      console.log("退出");
       setLoadingVisible(false);
-    }, 5000);
+    }, 750);
   }, []);
   useEffect(() => {
     router.events.on("routeChangeStart", routerChangeStartHandler);
@@ -35,6 +34,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         <title>D3arDear</title>
         <meta name="description" content="D3arDear 的技术博客" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/site.webmanifest" />
@@ -43,23 +43,9 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         <meta name="theme-color" content="#ffffff"></meta>
       </Head>
       <Noise />
-      <div
-        style={{
-          overflow: "hidden",
-          position: "absolute",
-          top: 0,
-          right: 0,
-          left: 0,
-          bottom: 0,
-        }}>
-        <div style={{ overflow: "hidden", height: "100%", width: "100%", position: "relative" }}>
-          <AnimatePresence exitBeforeEnter>
-            {loadingVisible && <Loading key="loading" />}
-          </AnimatePresence>
-        </div>
-      </div>
+      <Loading visible={loadingVisible} key="loading" />
       <AnimatePresence exitBeforeEnter>
-        <Component {...pageProps} key={router.pathname} />
+        {!loadingVisible && <Component {...pageProps} key={router.pathname} />}
       </AnimatePresence>
     </AppProvider>
   );
