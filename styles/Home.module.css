@@ -113,3 +113,7 @@
     flex-direction: column;
   }
 }
+
+.container {
+  background-color: #f3f3f3;
+}

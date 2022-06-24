@@ -14,7 +14,6 @@ import { useMemo, useState, useCallback } from "react";
 import { HomePageBlog } from "../components/home/blogHome/homeBlog";
 import { HomePageWork } from "../components/home/workHome/workHomePage";
 import { AnimatePresence, motion } from "framer-motion";
-import { defaultVariants } from "../components/constant/animation";
 
 const Home: NextPage = () => {
   const [pageIndex, setPageIndex] = useState(0);
@@ -50,7 +49,7 @@ const Home: NextPage = () => {
         onPageChanged={handlePageChanged}
         customPageIndex={pageIndex}
         minimalScrollDistance={3}
-        animationDuration={600}>
+        animationDuration={1000}>
         <HomePageMainContainer key={0} className="section">
           <HomePageBackgroundImg />
         </HomePageMainContainer>

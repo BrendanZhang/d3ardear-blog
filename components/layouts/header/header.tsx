@@ -10,9 +10,9 @@ import { media } from "../../constant/media";
 import { HeaderContainer, HeaderAction } from "../../styledComponents/header";
 import { ActionButtons } from "./actionButton";
 import { DesktopDrawer } from "./desktopActionDrawer";
-import Icon from "./icon";
-import IconWithTitle from "./iconWithTitle";
-import { MenuIcon } from "./menuIcon";
+import Icon from "../../icons/icon";
+import IconWithTitle from "../../icons/iconWithTitle";
+import { MenuIcon } from "../../icons/menuIcon";
 import { MobileDrawer } from "./mobileActionDrawer";
 
 interface IHeader {
@@ -57,9 +57,11 @@ const Header: React.FC<IHeader> = (props) => {
         </AnimatePresence>
         <AnimatePresence exitBeforeEnter>
           {menuActive && (
-            <MobileDrawer>
-              <ActionButtons device="mobile" active={true} />
-            </MobileDrawer>
+            <div style={{ position: "absolute", top: "0", left: "0", right: "0", bottom: "0" }}>
+              <MobileDrawer>
+                <ActionButtons device="mobile" active={true} />
+              </MobileDrawer>
+            </div>
           )}
         </AnimatePresence>
         <div>

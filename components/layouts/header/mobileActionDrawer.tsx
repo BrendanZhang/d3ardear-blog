@@ -6,12 +6,28 @@ import React, { PropsWithChildren, ReactChild, ReactElement, ReactNode } from "r
 import styled from "styled-components";
 import { defaultMotionProps, defaultVariants } from "../../constant/animation";
 import { media } from "../../constant/media";
-import Icon from "./icon";
+import Icon from "../../icons/icon";
 
 type TMobileActionProps = {};
 
 export const MobileDrawer: React.FC<PropsWithChildren<TMobileActionProps>> = (props) => {
   const { children } = props;
+  const drawerVariants = {
+    initial: {
+      originX: "right",
+      originY: "top",
+      transform: "rotate(-90deg) translateZ(0)",
+    },
+    animate: {
+      transform: "rotate(0deg) translateZ(0)",
+      transition: {
+        duration: 1,
+      },
+    },
+    exit: {
+      transform: "rotate(-90deg) translateZ(0)",
+    },
+  };
   const linkVariants = {
     ...defaultVariants,
     animate: {
@@ -46,23 +62,25 @@ export const MobileDrawer: React.FC<PropsWithChildren<TMobileActionProps>> = (pr
     window.open("mailto:brenz@d3ardear.fun");
   };
   return (
-    <MobileActionContainer {...defaultMotionProps} variants={defaultVariants}>
-      <StyledIcon color="#eeeeee" height="46px" />
-      <DrawerAction variants={actionVariants}>{children}</DrawerAction>
-      <StyledFooter variants={linkVariants}>
-        <header>
-          <h2>LINKS</h2>
-        </header>
-        <main>
-          <StyledIconButton onClick={onclickGithub}>
-            <GithubFilled />
-          </StyledIconButton>
-          <StyledIconButton style={{ marginLeft: "1em" }} onClick={onclickMail}>
-            <MailFilled />
-          </StyledIconButton>
-        </main>
-      </StyledFooter>
-    </MobileActionContainer>
+    <div style={{ position: "relative", height: "100vh", width: "100vw", overflow: "hidden" }}>
+      <MobileActionContainer {...defaultMotionProps} variants={drawerVariants}>
+        <StyledIcon color="#eeeeee" height="46px" />
+        <DrawerAction variants={actionVariants}>{children}</DrawerAction>
+        <StyledFooter variants={linkVariants}>
+          <header>
+            <h2>LINKS</h2>
+          </header>
+          <main>
+            <StyledIconButton onClick={onclickGithub}>
+              <GithubFilled />
+            </StyledIconButton>
+            <StyledIconButton style={{ marginLeft: "1em" }} onClick={onclickMail}>
+              <MailFilled />
+            </StyledIconButton>
+          </main>
+        </StyledFooter>
+      </MobileActionContainer>
+    </div>
   );
 };
 
@@ -99,7 +117,7 @@ export const DrawerAction = styled(motion.main)`
   justify-content: center;
   color: #eac486;
 `;
-const MobileActionContainer = styled(motion.header)`
+const MobileActionContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   color: inherit;

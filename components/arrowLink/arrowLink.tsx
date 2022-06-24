@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { DownArrowContainer, UpArrowContainer } from "./styledArrow";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { defaultMotionProps, defaultVariants } from "../constant/animation";
+import { defaultVariants } from "../constant/animation";
 
 type THref = "blog" | "/" | "work";
 interface IArrowLink {
@@ -19,17 +19,22 @@ const ArrowLink: React.FC<IArrowLink> = (props) => {
   const { color, clickTrigger } = props;
 
   return (
-    <ArrowContainer {...defaultMotionProps} variants={defaultVariants} light={color === "light"}>
+    <ArrowContainer
+      initial="initial"
+      exit="exit"
+      animate="animate"
+      variants={defaultVariants}
+      isLight={color === "light"}>
       <DownArrowContainer>
         <StyledArrow onClick={() => clickTrigger("down")}>
-          <KeyboardArrowDownIcon style={{ fontSize: "inherit" }} />
+          <KeyboardArrowDownIcon style={{ fontSize: "50px" }} />
         </StyledArrow>
       </DownArrowContainer>
     </ArrowContainer>
   );
 };
-const ArrowContainer = styled(motion.div)<{ light: boolean }>`
-  color: ${(props) => (props.light ? "#eeeeee" : "#333333")};
+const ArrowContainer = styled(motion.div)<{ isLight: boolean }>`
+  color: ${(props) => (props.isLight ? "#eeeeee" : "#333333")};
   transition: color 300ms;
 `;
 const StyledArrow = styled(IconButton)`

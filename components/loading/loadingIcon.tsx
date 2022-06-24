@@ -45,8 +45,8 @@ const svgVariant = {
 export const LoadingIcon = () => {
   return (
     <StyledSvg
-      height="50%"
-      width="50%"
+      height="26%"
+      width="26%"
       viewBox="0 0 128 128"
       initial="hidden"
       animate="visible"
@@ -95,5 +95,8 @@ export const LoadingIcon = () => {
 };
 
 const StyledSvg = styled(motion.svg)`
-  /* filter: drop-shadow(rgb(240, 73, 44) 0px 0px 4px); */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 `;

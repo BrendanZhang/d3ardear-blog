@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { defaultMotionProps, defaultVariants } from "../constant/animation";
 import { TLoadingProps } from "./Loading";
 import { LoadingIcon } from "./loadingIcon";
+import { LoadingRing } from "./loadingRing";
 
 export const Loading: React.FC<PropsWithChildren<{}>> = () => {
   const containerVariant = {
@@ -26,7 +27,7 @@ export const Loading: React.FC<PropsWithChildren<{}>> = () => {
   };
   return (
     <LoadingContainer {...defaultMotionProps} variants={containerVariant} className="loading">
-      这里是画板
+      <LoadingRing />
       <LoadingIcon />
     </LoadingContainer>
   );
