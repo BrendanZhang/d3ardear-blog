@@ -6,6 +6,7 @@ import React, { PropsWithChildren, ReactChild, ReactElement, ReactNode } from "r
 import styled from "styled-components";
 import { defaultMotionProps, defaultVariants } from "../../constant/animation";
 import { media } from "../../constant/media";
+import DrawerCover from "../../icons/drawerCover";
 import Icon from "../../icons/icon";
 
 type TMobileActionProps = {};
@@ -14,44 +15,16 @@ export const MobileDrawer: React.FC<PropsWithChildren<TMobileActionProps>> = (pr
   const { children } = props;
   const drawerVariants = {
     initial: {
-      transform: "rotate(-70deg) translateZ(0px,100%)",
+      transform: "translateX(50%)",
     },
     animate: {
-      transform: "rotate(-110deg) translate(0px,0%)",
+      transform: "translateX(0)",
       transition: {
         duration: 1,
       },
     },
     exit: {
-      transform: "rotate(-70deg) translateZ(0,100%)",
-    },
-  };
-  const drawerContainerVariants = {
-    initial: {
-      transform: "rotate(70deg) translateZ(0)",
-    },
-    animate: {
-      transform: "rotate(110deg) translateZ(0)",
-      transition: {
-        duration: 1,
-      },
-    },
-    exit: {
-      transform: "rotate(70deg) translateZ(0)",
-    },
-  };
-  const drawerCoverVariants = {
-    initial: {
-      transform: "translate(0px,-100%)",
-    },
-    animate: {
-      transform: "translate(0px,0%)",
-      transition: {
-        duration: 1,
-      },
-    },
-    exit: {
-      transform: "translate(0px,-100%)",
+      transform: "translateX(50%)",
     },
   };
   const linkVariants = {
@@ -59,7 +32,7 @@ export const MobileDrawer: React.FC<PropsWithChildren<TMobileActionProps>> = (pr
     animate: {
       opacity: 1,
       transition: {
-        delay: 0.7,
+        delay: 1,
         duration: 0.5,
       },
     },
@@ -69,7 +42,7 @@ export const MobileDrawer: React.FC<PropsWithChildren<TMobileActionProps>> = (pr
       opacity: 1,
       y: 0,
       transition: {
-        delay: 0.2,
+        delay: 0.5,
         duration: 0.5,
       },
     },
@@ -88,29 +61,24 @@ export const MobileDrawer: React.FC<PropsWithChildren<TMobileActionProps>> = (pr
     window.open("mailto:brenz@d3ardear.fun");
   };
   return (
-    <DrawerContainer
-      // style={{ position: "relative", height: "100vh", width: "100vw", overflow: "hidden" }}>
-      {...defaultMotionProps}
-      variants={drawerContainerVariants}>
-      <DrawerCover {...defaultMotionProps} variants={drawerCoverVariants}>
-        <MobileActionContainer {...defaultMotionProps} variants={drawerVariants}>
-          <StyledIcon color="#eeeeee" height="46px" />
-          <DrawerAction variants={actionVariants}>{children}</DrawerAction>
-          <StyledFooter variants={linkVariants}>
-            <header>
-              <h2>LINKS</h2>
-            </header>
-            <main>
-              <StyledIconButton onClick={onclickGithub}>
-                <GithubFilled />
-              </StyledIconButton>
-              <StyledIconButton style={{ marginLeft: "1em" }} onClick={onclickMail}>
-                <MailFilled />
-              </StyledIconButton>
-            </main>
-          </StyledFooter>
-        </MobileActionContainer>
-      </DrawerCover>
+    <DrawerContainer>
+      <MobileActionContainer {...defaultMotionProps} variants={defaultVariants}>
+        <DrawerAction variants={actionVariants}>{children}</DrawerAction>
+        <StyledFooter variants={linkVariants}>
+          <header>
+            <h2>CONTACT</h2>
+          </header>
+          <main>
+            <StyledIconButton onClick={onclickGithub}>
+              <GithubFilled />
+            </StyledIconButton>
+            <StyledIconButton style={{ marginLeft: "1em" }} onClick={onclickMail}>
+              <MailFilled />
+            </StyledIconButton>
+          </main>
+        </StyledFooter>
+      </MobileActionContainer>
+      <DrawerCover />
     </DrawerContainer>
   );
 };
@@ -131,13 +99,14 @@ const StyledFooter = styled(motion.footer)`
   align-items: flex-start;
   justify-content: flex-start;
   padding-left: 15px;
+  font-size: 6vw;
   h2 {
     font-weight: normal;
-    font-size: 18px;
+    font-size: inherit;
   }
   main {
     color: #eeeeee;
-    font-size: 30px;
+    font-size: inherit;
   }
 `;
 export const DrawerAction = styled(motion.main)`
@@ -149,36 +118,24 @@ export const DrawerAction = styled(motion.main)`
   color: #eac486;
 `;
 const DrawerContainer = styled(motion.div)`
-  position: fixed;
-  pointer-events: none;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const DrawerCover = styled(motion.div)`
-  overflow: hidden;
-  height: calc(35vh + 94vw);
-  width: calc(34vw + 94vh);
-  flex-shrink: 0;
   position: relative;
-  background: rgba(20, 43, 51, 0.8);
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
+  overflow: hidden;
+  width: 100%;
+  height: 100vh;
 `;
 const MobileActionContainer = styled(motion.div)`
+  position: absolute;
   display: flex;
   flex-direction: column;
   color: inherit;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   padding-left: 20px;
   padding-top: 20px;
   height: 100%;
   width: 100%;
   color: #eeeeee;
-  z-index: 20;
+  z-index: 10;
   /* background: rgba(20, 43, 51, 0.8);
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px); */

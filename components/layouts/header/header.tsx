@@ -14,6 +14,7 @@ import Icon from "../../icons/icon";
 import IconWithTitle from "../../icons/iconWithTitle";
 import { MenuIcon } from "../../icons/menuIcon";
 import { MobileDrawer } from "./mobileActionDrawer";
+import TitleWithoutIcon from "../../icons/iconWithTitle";
 
 interface IHeader {
   mode: "light" | "dark";
@@ -46,7 +47,12 @@ const Header: React.FC<IHeader> = (props) => {
     <HeaderContainer initial="initial" exit="exit" animate="animate" variants={defaultVariants}>
       <HeaderAction style={HeaderContainerStyle}>
         <StyledIconContainer>
-          <IconWithTitle fill={HeaderContainerStyle.color} height="46px" />
+          <Icon
+            color={menuActive ? "#eeeeee" : HeaderContainerStyle.color}
+            height="46px"
+            style={{ zIndex: 10, marginLeft: "-15px" }}
+          />
+          <TitleWithoutIcon fill={HeaderContainerStyle.color} height="46px" />
         </StyledIconContainer>
         <AnimatePresence exitBeforeEnter>
           {/* {menuActive && (

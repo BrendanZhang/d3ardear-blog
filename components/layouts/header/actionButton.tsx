@@ -46,7 +46,7 @@ export const ActionButtons: React.FC<{ device: "mobile" | "desktop"; active: boo
 
 const MobileButton = styled(Button)`
   color: currentColor;
-  font-size: 40px;
+  font-size: 8vw;
   position: relative;
   transition: all 300ms;
   margin-left: 5px;
