@@ -16,9 +16,7 @@ export const Loading: React.FC<PropsWithChildren<{ visible: boolean }>> = (props
     animate: {
       opacity: 1,
       transition: {
-        // background: { delay: 0.3, duration: 1.5 },
         duration: 0.75,
-        // ease: [0.04, 0.58, 0.445, 1.0],
         ease: "easeIn",
         bounce: 0,
       },
@@ -26,10 +24,8 @@ export const Loading: React.FC<PropsWithChildren<{ visible: boolean }>> = (props
     exit: {
       opacity: 0,
       transition: {
-        // background: { delay: 0.3, duration: 1.5 },
         duration: 0.75,
         delay: 0.2,
-        // ease: [0.04, 0.58, 0.445, 1.0],
         ease: "easeIn",
         bounce: 0,
       },

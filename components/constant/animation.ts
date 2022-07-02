@@ -102,7 +102,7 @@ const drawWrapper = {
     opacity: 0,
   },
   visible: {
-    backgroundColor: "rgba(20, 43, 51, 0.9)",
+    backgroundColor: "rgba(20, 43, 51, 0.85)",
     transition: {
       backgroundColor: { delay: 0.5, duration: 0.2 },
     },

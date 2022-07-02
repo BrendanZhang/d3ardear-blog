@@ -14,7 +14,7 @@ import {
   KEY_UP,
   MINIMAL_DELTA_Y,
 } from "./constant";
-import { usePrevIndex, useThrottle } from "./FullPageHooks";
+import { usePrevIndex } from "./FullPageHooks";
 import { wrapperStyle } from "./styles";
 import { isEmpty } from "./utils";
 
@@ -187,12 +187,6 @@ const FullPageScroll = (props: IFullPageProps) => {
       }
     });
   };
-  // const wheelScroll = useThrottle(
-  //   wheelScrollHandler,
-  //   (animationDelay as number) + (animationDuration as number),
-  //   // animationDuration as number,
-  //   [scrollWindow, animationDuration, animationDelay, wheelScrollHandler]
-  // );
 
   const touchMove = useCallback(
     (event: TouchEvent) => {
