@@ -3,7 +3,7 @@ import { AppsRounded, NotesRounded, TextSnippet } from "@mui/icons-material";
 import { Button, IconButton } from "@mui/material";
 import { AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import React, { ReactNode, useCallback, useMemo, useState } from "react";
+import React, { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { defaultVariants } from "../../constant/animation";
 import { media } from "../../constant/media";
@@ -15,6 +15,7 @@ import IconWithTitle from "../../icons/iconWithTitle";
 import { MenuIcon } from "../../icons/menuIcon";
 import { MobileDrawer } from "./mobileActionDrawer";
 import TitleWithoutIcon from "../../icons/iconWithTitle";
+import { useRouter } from "next/router";
 
 interface IHeader {
   mode: "light" | "dark";
@@ -24,10 +25,20 @@ interface IHeader {
 const Header: React.FC<IHeader> = (props) => {
   const { mode, sticky } = props;
   const [menuActive, setMenuAction] = useState(false);
+  const router = useRouter();
   const isLight = useMemo(() => mode === "light", [mode]);
   const onClickMenu = () => {
     setMenuAction((prevMenuAction) => !prevMenuAction);
   };
+  const routerChangeStartHandler = useCallback(() => {
+    setMenuAction(false);
+  }, []);
+  useEffect(() => {
+    router.events.on("routeChangeStart", routerChangeStartHandler);
+    return () => {
+      router.events.off("routeChangeStart", routerChangeStartHandler);
+    };
+  }, []);
   const IconStyle = useMemo(() => {
     return {
       fontSize: "20px",

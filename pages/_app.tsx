@@ -17,7 +17,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
   const routerChangeEnd = useCallback(() => {
     setTimeout(() => {
       setLoadingVisible(false);
-    }, 750);
+    }, 1500);
   }, []);
   useEffect(() => {
     router.events.on("routeChangeStart", routerChangeStartHandler);

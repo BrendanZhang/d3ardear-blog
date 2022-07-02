@@ -95,3 +95,59 @@ export const defaultMotionProps = {
   exit: "exit",
   initial: "initial",
 };
+
+const drawWrapper = {
+  hidden: { backgroundColor: "rgba(20, 43, 51, 0)" },
+  exit: {
+    opacity: 0,
+  },
+  visible: {
+    backgroundColor: "rgba(20, 43, 51, 0.9)",
+    transition: {
+      backgroundColor: { delay: 0.5, duration: 0.2 },
+    },
+  },
+};
+
+const draw = {
+  hidden: { pathLength: 0, opacity: 0, stroke: "rgba(20, 43, 51, 1)" },
+  exit: {
+    opacity: 0,
+  },
+  visible: {
+    pathLength: 1,
+    opacity: 1,
+    stroke: "rgba(20, 43, 51, 0)",
+    transition: {
+      pathLength: {
+        type: "spring",
+        duration: 1.5,
+        bounce: 0,
+        ease: "backInOut",
+      },
+      opacity: { duration: 0.01 },
+      stroke: { delay: 0.5, duration: 1.5 },
+    },
+  },
+};
+
+const drawDelay = {
+  transition: {
+    delay: 0.75,
+    duration: 0.75,
+    ease: "backInOut",
+  },
+};
+
+export const drawVariants = {
+  draw,
+  drawWrapper,
+};
+
+export const drawVariantsDelay = {
+  draw: { ...draw, exit: { ...draw.exit, ...drawDelay } },
+  drawWrapper: {
+    ...drawWrapper,
+    exit: { ...drawWrapper.exit, ...drawDelay },
+  },
+};
