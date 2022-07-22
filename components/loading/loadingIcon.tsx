@@ -45,8 +45,8 @@ const svgVariant = {
 export const LoadingIcon = () => {
   return (
     <StyledSvg
-      height="26%"
-      width="26%"
+      height="24%"
+      width="24%"
       viewBox="0 0 128 128"
       initial="hidden"
       animate="visible"
